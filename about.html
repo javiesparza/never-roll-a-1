@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Never Roll a 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+    <div class="max-w-4xl mx-auto p-8">
+        <div class="mb-8">
+            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
+        </div>
+        
+        <h1 class="text-4xl font-bold mb-8">About Never Roll a 1</h1>
+        
+        <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-6 text-gray-300">
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">The Game</h2>
+                <p>
+                    Never Roll a 1 is a simple yet addictive probability game. Your mission? Roll a standard six-sided die 10 times without hitting a 1. Sounds easy, right?
+                </p>
+                <p class="mt-3">
+                    With only a <strong class="text-green-400">16.2%</strong> chance of success, most players will fail. But that's what makes victory so sweet!
+                </p>
+            </section>
+            
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">The Math</h2>
+                <p>
+                    Each roll has a 5/6 chance of success (any number except 1). To win, you need to succeed 10 times in a row:
+                </p>
+                <div class="bg-slate-700/50 rounded-lg p-4 mt-3 font-mono text-sm">
+                    (5/6)^10 ≈ 0.1615 or 16.15%
+                </div>
+                <p class="mt-3">
+                    This game is a perfect demonstration of how probabilities compound. Even though each individual roll seems favorable, the odds stack against you quickly!
+                </p>
+            </section>
+            
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">Why We Built This</h2>
+                <p>
+                    We wanted to create a fun, educational game that teaches probability in an engaging way. There's no better teacher than experience, and nothing drives home the reality of compounding probabilities like watching yourself fail on roll 9 for the tenth time!
+                </p>
+            </section>
+            
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">Tips for Success</h2>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Stay calm - panicking won't change the odds</li>
+                    <li>Accept that most attempts will fail - that's statistics!</li>
+                    <li>Celebrate small wins (making it to roll 7 or 8 is already rare)</li>
+                    <li>Keep trying - with a 16% success rate, you'll get there eventually</li>
+                </ul>
+            </section>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <a href="index.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl">
+                Back to Game
+            </a>
+        </div>
+    </div>
+</body>
+</html>

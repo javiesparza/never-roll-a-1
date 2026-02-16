@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Never Roll a 1 - Beat the Odds!</title>
+    <meta
+      name="description"
+      content="Can you roll a die 10 times without hitting a 1? Test your luck in this addictive probability game!"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://neverrollone.com/" />
+    <meta property="og:title" content="Never Roll a 1 - Beat the Odds! 🎲" />
+    <meta
+      property="og:description"
+      content="Can you roll a die 10 times without hitting a 1? Only 16% succeed. Test your luck now!"
+    />
+    <meta property="og:image" content="https://neverrollone.com/preview.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://neverrollone.com/" />
+    <meta
+      property="twitter:title"
+      content="Never Roll a 1 - Beat the Odds! 🎲"
+    />
+    <meta
+      property="twitter:description"
+      content="Can you roll a die 10 times without hitting a 1? Only 16% succeed. Test your luck now!"
+    />
+    <meta
+      property="twitter:image"
+      content="https://neverrollone.com/preview.png"
+    />
+
+    <!-- Apple -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Never Roll a 1" />
+
+    <!-- Google AdSense -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      .bounce-animation {
+        animation: bounce 0.5s ease-in-out;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+      .pulse-slow {
+        animation: pulse 2s ease-in-out infinite;
+      }
+      .pulse-bg {
+        animation: pulse 3s ease-in-out infinite;
+      }
+      @keyframes flip {
+        0% {
+          transform: rotateY(0deg);
+        }
+        50% {
+          transform: rotateY(90deg);
+        }
+        100% {
+          transform: rotateY(0deg);
+        }
+      }
+      .flip-animation {
+        animation: flip 0.4s ease-in-out;
+      }
+
+      /* Leaderboard animations & styles */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes slideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .modal-enter {
+        animation: fadeIn 0.2s ease-out, slideUp 0.3s ease-out;
+      }
+      .tab-active {
+        background: linear-gradient(to right, #9333ea, #db2777);
+        color: white;
+        font-weight: 700;
+      }
+      .tab-inactive {
+        background: rgba(51, 65, 85, 0.5);
+        color: #94a3b8;
+      }
+      .tab-inactive:hover {
+        background: rgba(71, 85, 105, 0.5);
+        color: #cbd5e1;
+      }
+      .leaderboard-self {
+        background: rgba(250, 204, 21, 0.1);
+        border: 1px solid rgba(250, 204, 21, 0.3);
+      }
+      .leaderboard-spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid rgba(147, 51, 234, 0.3);
+        border-top-color: #9333ea;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen"
+  >
+    <!-- Animated background -->
+    <div class="fixed inset-0 opacity-20 pointer-events-none">
+      <div
+        class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500 rounded-full blur-3xl pulse-bg"
+      ></div>
+      <div
+        class="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500 rounded-full blur-3xl pulse-bg"
+        style="animation-delay: 700ms"
+      ></div>
+    </div>
+
+    <!-- Top Banner Ad -->
+    <div id="topBannerAd" class="max-w-4xl mx-auto relative z-10 px-4 mb-4">
+      <div class="h-24 flex items-center justify-center overflow-hidden">
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615"
+          crossorigin="anonymous"
+        ></script>
+        <!-- Top Banner -->
+        <ins
+          class="adsbygoogle"
+          style="display: inline-block; width: 728px; height: 90px"
+          data-ad-client="ca-pub-6398871668173615"
+          data-ad-slot="1986484521"
+        ></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+
+    <div id="mainContent" class="max-w-4xl mx-auto relative z-10 pb-32 px-4">
+      <!-- Leaderboard Button -->
+      <div class="flex justify-end mb-4">
+        <button
+          onclick="openLeaderboard()"
+          class="px-4 py-2 bg-slate-800/50 backdrop-blur-sm border border-yellow-500/40 rounded-lg text-yellow-400 hover:bg-slate-800/70 hover:border-yellow-400/60 transition-all duration-200 text-sm font-bold flex items-center gap-2"
+        >
+          🏆 Leaderboard
+        </button>
+      </div>
+
+      <!-- Header Stats -->
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div
+          id="winsBlock"
+          class="bg-slate-800/50 backdrop-blur-sm border border-pink-500/30 rounded-lg p-4 cursor-pointer hover:bg-slate-800/70 transition-colors flex flex-col"
+          onclick="cycleWinsDisplay()"
+        >
+          <div class="flex items-center justify-between text-pink-400 mb-1">
+            <span class="text-xs font-bold uppercase" id="winsLabel"
+              >Today's Wins</span
+            >
+            <div class="flex gap-1">
+              <div
+                id="winsDot1"
+                class="w-1.5 h-1.5 rounded-full bg-pink-400"
+              ></div>
+              <div
+                id="winsDot2"
+                class="w-1.5 h-1.5 rounded-full bg-pink-400/30"
+              ></div>
+            </div>
+          </div>
+          <div class="text-3xl font-bold mt-auto" id="winsDisplay">0</div>
+        </div>
+
+        <div
+          id="streakBlock"
+          class="bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 cursor-pointer hover:bg-slate-800/70 transition-colors flex flex-col"
+          onclick="cycleStreakDisplay()"
+        >
+          <div class="flex items-center justify-between text-purple-400 mb-1">
+            <span class="text-xs font-bold uppercase" id="streakLabel"
+              >Win Streak</span
+            >
+            <div class="flex gap-1">
+              <div
+                id="streakDot1"
+                class="w-1.5 h-1.5 rounded-full bg-purple-400"
+              ></div>
+              <div
+                id="streakDot2"
+                class="w-1.5 h-1.5 rounded-full bg-purple-400/30"
+              ></div>
+              <div
+                id="streakDot3"
+                class="w-1.5 h-1.5 rounded-full bg-purple-400/30"
+              ></div>
+            </div>
+          </div>
+          <div class="text-3xl font-bold mt-auto" id="streakDisplay">0</div>
+        </div>
+
+        <div
+          id="attemptsBlock"
+          class="bg-slate-800/50 backdrop-blur-sm border border-blue-500/30 rounded-lg p-4 cursor-pointer hover:bg-slate-800/70 transition-colors flex flex-col"
+          onclick="cycleAttemptsDisplay()"
+        >
+          <div class="flex items-center justify-between text-blue-400 mb-1">
+            <span class="text-xs font-bold uppercase" id="attemptsLabel"
+              >Today's Attempts</span
+            >
+            <div class="flex gap-1">
+              <div
+                id="attemptsDot1"
+                class="w-1.5 h-1.5 rounded-full bg-blue-400"
+              ></div>
+              <div
+                id="attemptsDot2"
+                class="w-1.5 h-1.5 rounded-full bg-blue-400/30"
+              ></div>
+              <div
+                id="attemptsDot3"
+                class="w-1.5 h-1.5 rounded-full bg-blue-400/30"
+              ></div>
+            </div>
+          </div>
+          <div class="text-3xl font-bold mt-auto" id="attemptsDisplay">0</div>
+        </div>
+      </div>
+
+      <!-- Main Game Area -->
+      <div
+        class="bg-slate-800/70 backdrop-blur-xl border-4 border-purple-500/50 rounded-2xl p-8 mb-6 shadow-2xl"
+      >
+        <!-- Progress Bar -->
+        <div class="mb-8">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-bold text-purple-300">PROGRESS</span>
+            <span class="text-2xl font-black text-white" id="progressText"
+              >0/10</span
+            >
+          </div>
+          <div
+            class="h-6 bg-slate-700 rounded-full overflow-hidden border-2 border-purple-500/50"
+          >
+            <div
+              id="progressBar"
+              class="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 transition-all duration-500 ease-out"
+              style="width: 0%"
+            >
+              <div class="absolute inset-0 bg-white/20 pulse-slow"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dice Display -->
+        <div class="flex justify-center mb-8">
+          <div id="diceContainer">
+            <div
+              id="dice"
+              class="w-40 h-40 bg-slate-700 rounded-3xl shadow-2xl flex items-center justify-center border-4 border-dashed border-purple-500/50"
+            >
+              <span class="text-6xl">🎲</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div
+          id="actionButtonContainer"
+          class="flex flex-col items-center gap-4"
+        >
+          <button
+            id="actionButton"
+            class="px-12 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl font-black rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-200 uppercase tracking-wider border-2 border-purple-400"
+          >
+            🎲 START GAME
+          </button>
+        </div>
+
+        <!-- Intensity Message -->
+        <div id="intensityMessage" class="text-center mt-6 hidden">
+          <div
+            class="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 pulse-slow"
+          ></div>
+        </div>
+
+        <!-- Game Status -->
+        <div id="gameStatus" class="text-center mt-6 hidden"></div>
+
+        <!-- Live Probability -->
+        <div id="liveProb" class="mt-6 text-center hidden">
+          <div class="text-sm text-gray-400">
+            Current Success Rate:
+            <span class="text-yellow-400 font-bold" id="currentProb"
+              >100.0%</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Panel -->
+      <div
+        class="bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-lg p-6"
+      >
+        <h3
+          class="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2"
+        >
+          <span class="text-xl">⚡</span>
+          THE ODDS
+        </h3>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <div class="text-gray-400">Chance to Win (10 rolls):</div>
+            <div class="text-xl font-bold text-green-400">16.15%</div>
+          </div>
+          <div>
+            <div class="text-gray-400">Chance to Fail:</div>
+            <div class="text-xl font-bold text-red-400">83.85%</div>
+          </div>
+          <div>
+            <div class="text-gray-400">Make it to Roll 8:</div>
+            <div class="text-xl font-bold text-yellow-400">23.3%</div>
+          </div>
+          <div>
+            <div class="text-gray-400">Your Success Rate:</div>
+            <div class="text-xl font-bold text-purple-400" id="userSuccessRate">
+              0.0%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Sticky Banner Ad -->
+    <div
+      id="bottomBannerAd"
+      class="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-700/50"
+    >
+      <div
+        class="max-w-4xl mx-auto flex items-center justify-center overflow-hidden py-2 px-4"
+      >
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615"
+          crossorigin="anonymous"
+        ></script>
+        <!-- Bottom Sticky -->
+        <ins
+          class="adsbygoogle"
+          style="
+            display: inline-block;
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+          "
+          data-ad-client="ca-pub-6398871668173615"
+          data-ad-slot="4421076176"
+        ></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div
+      class="max-w-4xl mx-auto text-center py-4 text-sm text-gray-500 space-x-4 relative z-10 mb-24"
+    >
+      <a href="about.html" class="hover:text-purple-400">About</a>
+      <span>•</span>
+      <a href="privacy.html" class="hover:text-purple-400">Privacy Policy</a>
+      <span>•</span>
+      <a href="contact.html" class="hover:text-purple-400">Contact</a>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="fixed inset-0 z-[100] hidden">
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeLeaderboard()"></div>
+      <!-- Modal Container -->
+      <div class="relative flex items-center justify-center min-h-screen p-4 pointer-events-none">
+        <div class="modal-enter bg-slate-900 border border-purple-500/40 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto pointer-events-auto shadow-2xl">
+          <!-- Header -->
+          <div class="flex items-center justify-between p-5 border-b border-slate-700/50 sticky top-0 bg-slate-900 z-10 rounded-t-2xl">
+            <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">🏆 Leaderboard</h2>
+            <button onclick="closeLeaderboard()" class="text-gray-400 hover:text-white text-2xl leading-none transition-colors">&times;</button>
+          </div>
+
+          <!-- Auth Section -->
+          <div id="leaderboardAuthSection" class="px-5 pt-4"></div>
+
+          <!-- Tab Bar -->
+          <div class="flex gap-2 px-5 py-3">
+            <button id="tabDaily" onclick="switchLeaderboardTab('daily')" class="tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200">Daily</button>
+            <button id="tabAllTime" onclick="switchLeaderboardTab('alltime')" class="tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200">All-Time</button>
+          </div>
+
+          <!-- Leaderboard Content -->
+          <div id="leaderboardContent" class="px-5 pb-5"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display Name Modal -->
+    <div id="displayNameModal" class="fixed inset-0 z-[110] hidden">
+      <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      <div class="relative flex items-center justify-center min-h-screen p-4 pointer-events-none">
+        <div class="modal-enter bg-slate-900 border border-purple-500/40 rounded-2xl w-full max-w-sm pointer-events-auto shadow-2xl p-6">
+          <h3 class="text-lg font-bold text-white mb-4">Choose a Display Name</h3>
+          <input
+            id="displayNameInput"
+            type="text"
+            maxlength="20"
+            placeholder="Enter your name..."
+            class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors mb-2"
+          />
+          <div id="displayNameError" class="text-red-400 text-sm mb-4 hidden"></div>
+          <button onclick="saveDisplayName()" class="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-lg transition-all duration-200">
+            Save Name
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== Firebase Configuration =====
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+      };
+      // TODO: Replace with actual Firebase config
+
+      /*
+        Firestore Security Rules:
+        rules_version = '2';
+        service cloud.firestore {
+          match /databases/{database}/documents {
+            match /users/{userId} {
+              allow read: if request.auth != null;
+              allow write: if request.auth != null && request.auth.uid == userId;
+            }
+            match /dailyScores/{docId} {
+              allow read: if true;
+              allow write: if request.auth != null && resource == null || resource.data.userId == request.auth.uid;
+            }
+            match /allTimeScores/{userId} {
+              allow read: if true;
+              allow write: if request.auth != null && request.auth.uid == userId;
+            }
+          }
+        }
+
+        Required Composite Indexes:
+        - Collection: dailyScores — Fields: date ASC, streak DESC, attempts ASC
+        - Collection: allTimeScores — Fields: streak DESC, attempts ASC
+      */
+
+      let firebaseReady = false;
+      let auth = null;
+      let db = null;
+      let googleProvider = null;
+      let currentUser = null;
+      let userDisplayName = null;
+
+      try {
+        if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+          const app = firebase.initializeApp(firebaseConfig);
+          auth = firebase.auth();
+          db = firebase.firestore();
+          googleProvider = new firebase.auth.GoogleAuthProvider();
+          firebaseReady = true;
+        }
+      } catch (e) {
+        console.warn("Firebase init failed, leaderboard disabled:", e);
+        firebaseReady = false;
+      }
+
+      // Ad Toggle - Set to true to show ads, false to hide
+      const SHOW_ADS = false;
+
+      // Game State
+      let currentRoll = null;
+      let rollCount = 0;
+      let isRolling = false;
+      let gameOver = false;
+      let bestStreak = 0;
+      let totalAttempts = 0;
+      let dailyAttempts = 0; // Total attempts today
+      let streakAttempts = 0; // Attempts for current streak
+      let winStreak = 0; // Consecutive wins in a row
+      let dailyWins = 0; // Total wins today
+      let allTimeWins = 0; // Total wins all-time
+      let todayBestStreak = 0; // Best win streak today
+      let allTimeBestStreak = 0; // Best win streak all-time
+      let lastPlayedDate = null;
+
+      // UI cycle states
+      let winsDisplayMode = "today"; // 'today' or 'alltime'
+      let streakDisplayMode = "current"; // 'current', 'todayBest', or 'allTimeBest'
+      let attemptsDisplayMode = "today"; // 'today', 'streak', or 'alltime'
+
+      // Leaderboard state
+      let currentLeaderboardTab = "daily";
+
+      // Load saved data from localStorage
+      function loadGameData() {
+        const saved = localStorage.getItem("neverRollOneData");
+        if (saved) {
+          const data = JSON.parse(saved);
+          bestStreak = data.bestStreak || 0;
+          totalAttempts = data.totalAttempts || 0;
+          dailyAttempts = data.dailyAttempts || 0;
+          streakAttempts = data.streakAttempts || 0;
+          dailyWins = data.dailyWins || 0;
+          winStreak = data.winStreak || 0;
+          allTimeWins = data.allTimeWins || 0;
+          todayBestStreak = data.todayBestStreak || 0;
+          allTimeBestStreak = data.allTimeBestStreak || 0;
+          lastPlayedDate = data.lastPlayedDate || null;
+
+          // Check if it's a new day - reset daily stats
+          const today = new Date().toDateString();
+          if (lastPlayedDate !== today) {
+            dailyWins = 0;
+            dailyAttempts = 0;
+            winStreak = 0;
+            streakAttempts = 0;
+            todayBestStreak = 0;
+            lastPlayedDate = today;
+            saveGameData();
+          }
+        }
+      }
+
+      // Save data to localStorage
+      function saveGameData() {
+        const data = {
+          bestStreak,
+          totalAttempts,
+          dailyAttempts,
+          streakAttempts,
+          dailyWins,
+          winStreak,
+          allTimeWins,
+          todayBestStreak,
+          allTimeBestStreak,
+          lastPlayedDate: new Date().toDateString(),
+        };
+        localStorage.setItem("neverRollOneData", JSON.stringify(data));
+      }
+
+      // DOM Elements
+      const dice = document.getElementById("dice");
+      const diceContainer = document.getElementById("diceContainer");
+      const actionButton = document.getElementById("actionButton");
+      const gameStatus = document.getElementById("gameStatus");
+      const progressBar = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      const intensityMessage = document.getElementById("intensityMessage");
+      const liveProb = document.getElementById("liveProb");
+      const currentProb = document.getElementById("currentProb");
+
+      // Dice colors
+      const diceColors = {
+        1: "#dc2626", // red
+        2: "#f97316", // orange
+        3: "#2563eb", // blue
+        4: "#16a34a", // green
+        5: "#9333ea", // purple
+        6: "#db2777", // pink
+      };
+
+      function getIntensityMessage(count) {
+        if (count >= 8) return "🔥 LEGENDARY TERRITORY 🔥";
+        if (count >= 6) return "⚡ DANGER ZONE ⚡";
+        if (count >= 4) return "💎 HEATING UP 💎";
+        if (count >= 2) return "🎯 BUILDING MOMENTUM 🎯";
+        return "🎲 LET'S GO 🎲";
+      }
+
+      // ===== Authentication Functions =====
+
+      async function signInWithGoogle() {
+        if (!firebaseReady) return null;
+        try {
+          const result = await auth.signInWithPopup(googleProvider);
+          await checkAndSetDisplayName(result.user);
+          return result.user;
+        } catch (e) {
+          if (e.code !== 'auth/popup-closed-by-user') {
+            console.error("Sign-in error:", e);
+          }
+          return null;
+        }
+      }
+
+      async function signOutUser() {
+        if (!firebaseReady) return;
+        try {
+          await auth.signOut();
+          currentUser = null;
+          userDisplayName = null;
+          updateLeaderboardAuthUI();
+        } catch (e) {
+          console.error("Sign-out error:", e);
+        }
+      }
+
+      async function checkAndSetDisplayName(user) {
+        if (!firebaseReady || !user) return;
+        try {
+          const doc = await db.collection("users").doc(user.uid).get();
+          if (doc.exists && doc.data().displayName) {
+            userDisplayName = doc.data().displayName;
+          } else {
+            openDisplayNameModal();
+          }
+        } catch (e) {
+          console.error("Error checking display name:", e);
+        }
+      }
+
+      function openDisplayNameModal() {
+        document.getElementById("displayNameModal").classList.remove("hidden");
+        document.getElementById("displayNameInput").value = "";
+        document.getElementById("displayNameError").classList.add("hidden");
+        document.getElementById("displayNameInput").focus();
+      }
+
+      async function saveDisplayName() {
+        const input = document.getElementById("displayNameInput");
+        const errorEl = document.getElementById("displayNameError");
+        const name = input.value.trim();
+
+        // Validate: 3-20 chars, alphanumeric + spaces
+        if (name.length < 3 || name.length > 20) {
+          errorEl.textContent = "Name must be 3-20 characters.";
+          errorEl.classList.remove("hidden");
+          return;
+        }
+        if (!/^[a-zA-Z0-9 ]+$/.test(name)) {
+          errorEl.textContent = "Only letters, numbers, and spaces allowed.";
+          errorEl.classList.remove("hidden");
+          return;
+        }
+
+        if (!currentUser) return;
+
+        try {
+          await db.collection("users").doc(currentUser.uid).set({
+            displayName: name,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+          userDisplayName = name;
+          document.getElementById("displayNameModal").classList.add("hidden");
+          updateLeaderboardAuthUI();
+        } catch (e) {
+          errorEl.textContent = "Failed to save. Please try again.";
+          errorEl.classList.remove("hidden");
+          console.error("Save display name error:", e);
+        }
+      }
+
+      // Auth state listener
+      if (firebaseReady) {
+        auth.onAuthStateChanged(async (user) => {
+          currentUser = user;
+          if (user) {
+            await checkAndSetDisplayName(user);
+          } else {
+            userDisplayName = null;
+          }
+          updateLeaderboardAuthUI();
+          updateSaveToLeaderboardButton();
+        });
+      }
+
+      // ===== Firestore Score Functions =====
+
+      function getTodayString() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+
+      function isBetterScore(newScore, oldScore) {
+        if (!oldScore) return true;
+        if (newScore.streak > oldScore.streak) return true;
+        if (newScore.streak === oldScore.streak && newScore.attempts < oldScore.attempts) return true;
+        return false;
+      }
+
+      async function saveScoreToLeaderboard() {
+        if (!firebaseReady) {
+          alert("Firebase is not configured. Leaderboard is unavailable.");
+          return;
+        }
+
+        if (!currentUser) {
+          const user = await signInWithGoogle();
+          if (!user) return;
+        }
+
+        if (!userDisplayName) {
+          openDisplayNameModal();
+          return;
+        }
+
+        const btn = document.getElementById("saveToLeaderboardBtn");
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = "Saving...";
+        }
+
+        try {
+          const today = getTodayString();
+          const newScore = {
+            userId: currentUser.uid,
+            displayName: userDisplayName,
+            streak: winStreak,
+            attempts: dailyAttempts,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          // Save daily score
+          const dailyDocId = `${currentUser.uid}_${today}`;
+          const dailyRef = db.collection("dailyScores").doc(dailyDocId);
+          const dailyDoc = await dailyRef.get();
+
+          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, dailyDoc.exists ? dailyDoc.data() : null)) {
+            await dailyRef.set({ ...newScore, date: today });
+          }
+
+          // Save all-time score
+          const allTimeRef = db.collection("allTimeScores").doc(currentUser.uid);
+          const allTimeDoc = await allTimeRef.get();
+
+          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, allTimeDoc.exists ? allTimeDoc.data() : null)) {
+            await allTimeRef.set(newScore);
+          }
+
+          showSaveSuccess();
+        } catch (e) {
+          console.error("Save score error:", e);
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "🏆 Save to Leaderboard";
+          }
+          alert("Failed to save score. Please try again.");
+        }
+      }
+
+      async function fetchDailyLeaderboard() {
+        if (!firebaseReady) return [];
+        try {
+          const today = getTodayString();
+          const snapshot = await db.collection("dailyScores")
+            .where("date", "==", today)
+            .orderBy("streak", "desc")
+            .orderBy("attempts", "asc")
+            .limit(10)
+            .get();
+          return snapshot.docs.map(doc => doc.data());
+        } catch (e) {
+          console.error("Fetch daily leaderboard error:", e);
+          return [];
+        }
+      }
+
+      async function fetchAllTimeLeaderboard() {
+        if (!firebaseReady) return [];
+        try {
+          const snapshot = await db.collection("allTimeScores")
+            .orderBy("streak", "desc")
+            .orderBy("attempts", "asc")
+            .limit(25)
+            .get();
+          return snapshot.docs.map(doc => doc.data());
+        } catch (e) {
+          console.error("Fetch all-time leaderboard error:", e);
+          return [];
+        }
+      }
+
+      async function fetchUserBest(tab) {
+        if (!firebaseReady || !currentUser) return null;
+        try {
+          if (tab === "daily") {
+            const today = getTodayString();
+            const doc = await db.collection("dailyScores").doc(`${currentUser.uid}_${today}`).get();
+            return doc.exists ? doc.data() : null;
+          } else {
+            const doc = await db.collection("allTimeScores").doc(currentUser.uid).get();
+            return doc.exists ? doc.data() : null;
+          }
+        } catch (e) {
+          console.error("Fetch user best error:", e);
+          return null;
+        }
+      }
+
+      async function getUserRank(tab) {
+        if (!firebaseReady || !currentUser) return null;
+        try {
+          const userBest = await fetchUserBest(tab);
+          if (!userBest) return null;
+
+          let query;
+          if (tab === "daily") {
+            const today = getTodayString();
+            // Count entries with better scores
+            const betterStreak = await db.collection("dailyScores")
+              .where("date", "==", today)
+              .where("streak", ">", userBest.streak)
+              .get();
+
+            const sameStreakBetterAttempts = await db.collection("dailyScores")
+              .where("date", "==", today)
+              .where("streak", "==", userBest.streak)
+              .where("attempts", "<", userBest.attempts)
+              .get();
+
+            return betterStreak.size + sameStreakBetterAttempts.size + 1;
+          } else {
+            const betterStreak = await db.collection("allTimeScores")
+              .where("streak", ">", userBest.streak)
+              .get();
+
+            const sameStreakBetterAttempts = await db.collection("allTimeScores")
+              .where("streak", "==", userBest.streak)
+              .where("attempts", "<", userBest.attempts)
+              .get();
+
+            return betterStreak.size + sameStreakBetterAttempts.size + 1;
+          }
+        } catch (e) {
+          console.error("Get user rank error:", e);
+          return null;
+        }
+      }
+
+      // ===== Leaderboard UI Functions =====
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function openLeaderboard() {
+        if (!firebaseReady) {
+          alert("Firebase is not configured. Add your Firebase config to enable the leaderboard.");
+          return;
+        }
+        document.getElementById("leaderboardModal").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        currentLeaderboardTab = "daily";
+        document.getElementById("tabDaily").className = "tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200";
+        document.getElementById("tabAllTime").className = "tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200";
+        updateLeaderboardAuthUI();
+        loadLeaderboardData("daily");
+      }
+
+      function closeLeaderboard() {
+        document.getElementById("leaderboardModal").classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+
+      function switchLeaderboardTab(tab) {
+        currentLeaderboardTab = tab;
+        if (tab === "daily") {
+          document.getElementById("tabDaily").className = "tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200";
+          document.getElementById("tabAllTime").className = "tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200";
+        } else {
+          document.getElementById("tabDaily").className = "tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200";
+          document.getElementById("tabAllTime").className = "tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200";
+        }
+        loadLeaderboardData(tab);
+      }
+
+      async function loadLeaderboardData(tab) {
+        const content = document.getElementById("leaderboardContent");
+        content.innerHTML = '<div class="flex justify-center py-8"><div class="leaderboard-spinner"></div></div>';
+
+        try {
+          const [entries, userBest] = await Promise.all([
+            tab === "daily" ? fetchDailyLeaderboard() : fetchAllTimeLeaderboard(),
+            fetchUserBest(tab)
+          ]);
+
+          // Update auth section with user best
+          updateLeaderboardAuthUI(userBest, tab);
+
+          if (entries.length === 0) {
+            content.innerHTML = `
+              <div class="text-center py-8 text-gray-400">
+                <div class="text-4xl mb-3">🎲</div>
+                <div class="font-bold mb-1">No scores yet${tab === 'daily' ? ' today' : ''}</div>
+                <div class="text-sm">Be the first to save a score!</div>
+              </div>
+            `;
+            return;
+          }
+
+          renderLeaderboardEntries(entries);
+        } catch (e) {
+          console.error("Load leaderboard error:", e);
+          content.innerHTML = '<div class="text-center py-8 text-red-400">Failed to load leaderboard. Please try again.</div>';
+        }
+      }
+
+      function renderLeaderboardEntries(entries) {
+        const content = document.getElementById("leaderboardContent");
+        const rankIcons = ['🥇', '🥈', '🥉'];
+
+        let html = '<div class="space-y-2">';
+        entries.forEach((entry, i) => {
+          const rank = i + 1;
+          const rankDisplay = rank <= 3 ? `<span class="text-lg">${rankIcons[i]}</span>` : `<span class="text-gray-400 font-bold text-sm w-6 text-center">${rank}</span>`;
+          const isSelf = currentUser && entry.userId === currentUser.uid;
+          const selfClass = isSelf ? 'leaderboard-self' : 'bg-slate-800/50 border border-slate-700/30';
+
+          const displayName = escapeHtml(entry.displayName || 'Anonymous');
+          const truncatedName = displayName.length > 15 ? displayName.substring(0, 15) + '...' : displayName;
+
+          let dateStr = '';
+          if (entry.timestamp && entry.timestamp.toDate) {
+            dateStr = entry.timestamp.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          }
+
+          html += `
+            <div class="${selfClass} rounded-lg px-3 py-2.5 flex items-center gap-3">
+              <div class="flex-shrink-0 w-8 flex justify-center">${rankDisplay}</div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-sm text-white truncate">${truncatedName}</div>
+                ${dateStr ? `<div class="text-xs text-gray-500">${dateStr}</div>` : ''}
+              </div>
+              <div class="text-right flex-shrink-0">
+                <div class="font-black text-yellow-400">${entry.streak}</div>
+                <div class="text-xs text-gray-400">${entry.attempts} att.</div>
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+        content.innerHTML = html;
+      }
+
+      function updateLeaderboardAuthUI(userBest, tab) {
+        const section = document.getElementById("leaderboardAuthSection");
+        if (!section) return;
+
+        if (!currentUser) {
+          section.innerHTML = `
+            <div class="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4 text-center">
+              <div class="text-sm text-gray-400 mb-3">Sign in to save scores and see your rank</div>
+              <button onclick="signInWithGoogle()" class="px-4 py-2 bg-white text-gray-800 font-bold rounded-lg hover:bg-gray-100 transition-colors text-sm flex items-center gap-2 mx-auto">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+                Sign in with Google
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        // Signed in
+        if (!userBest && tab) {
+          section.innerHTML = `
+            <div class="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-300 font-bold">${escapeHtml(userDisplayName || 'Player')}</span>
+                <button onclick="signOutUser()" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Sign out</button>
+              </div>
+              <div class="text-sm text-gray-400">No scores yet — win a game!</div>
+            </div>
+          `;
+          return;
+        }
+
+        if (userBest && tab) {
+          section.innerHTML = `
+            <div class="bg-slate-800/50 border border-yellow-500/20 rounded-lg p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-300 font-bold">${escapeHtml(userDisplayName || 'Player')}</span>
+                <button onclick="signOutUser()" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Sign out</button>
+              </div>
+              <div class="text-sm font-bold text-yellow-400">Your Best: ${userBest.streak} streak in ${userBest.attempts} attempts</div>
+            </div>
+          `;
+
+          // Fetch rank asynchronously
+          getUserRank(tab).then(rank => {
+            if (rank !== null) {
+              const rankEl = section.querySelector('.user-rank-display');
+              if (!rankEl) {
+                const bestDiv = section.querySelector('.text-yellow-400');
+                if (bestDiv) {
+                  bestDiv.insertAdjacentHTML('afterend', `<div class="user-rank-display text-xs text-gray-400 mt-1">Rank: #${rank}</div>`);
+                }
+              }
+            }
+          });
+          return;
+        }
+
+        // Default: signed in, no tab context
+        section.innerHTML = `
+          <div class="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-300 font-bold">${escapeHtml(userDisplayName || 'Player')}</span>
+              <button onclick="signOutUser()" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Sign out</button>
+            </div>
+          </div>
+        `;
+      }
+
+      function showSaveSuccess() {
+        const btn = document.getElementById("saveToLeaderboardBtn");
+        if (btn) {
+          btn.textContent = "✅ Saved!";
+          btn.disabled = true;
+          btn.className = "px-8 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg cursor-default opacity-80";
+        }
+      }
+
+      function updateSaveToLeaderboardButton() {
+        // If user signs in while on a win screen, add the save button
+        if (gameOver && rollCount === 10 && firebaseReady) {
+          const existingBtn = document.getElementById("saveToLeaderboardBtn");
+          if (!existingBtn) {
+            actionButton.insertAdjacentHTML(
+              "beforebegin",
+              '<button id="saveToLeaderboardBtn" onclick="saveScoreToLeaderboard()" class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">🏆 Save to Leaderboard</button>'
+            );
+          }
+        }
+      }
+
+      // Cycle wins display between today and all-time
+      function cycleWinsDisplay() {
+        const winsBlock = document.getElementById("winsBlock");
+
+        // Add flip animation
+        winsBlock.classList.add("flip-animation");
+
+        // Change content at the midpoint of the flip (when card is perpendicular)
+        setTimeout(() => {
+          if (winsDisplayMode === "today") {
+            winsDisplayMode = "alltime";
+            document.getElementById("winsLabel").textContent = "All-Time Wins";
+            document.getElementById("winsDisplay").textContent = allTimeWins;
+            // Update dots
+            document.getElementById("winsDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-pink-400/30";
+            document.getElementById("winsDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-pink-400";
+          } else {
+            winsDisplayMode = "today";
+            document.getElementById("winsLabel").textContent = "Today's Wins";
+            document.getElementById("winsDisplay").textContent = dailyWins;
+            // Update dots
+            document.getElementById("winsDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-pink-400";
+            document.getElementById("winsDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-pink-400/30";
+          }
+        }, 200);
+
+        // Remove animation class after completion
+        setTimeout(() => {
+          winsBlock.classList.remove("flip-animation");
+        }, 400);
+      }
+
+      // Cycle streak display between current, today's best, and all-time best
+      function cycleStreakDisplay() {
+        const streakBlock = document.getElementById("streakBlock");
+
+        // Add flip animation
+        streakBlock.classList.add("flip-animation");
+
+        // Change content at the midpoint of the flip (when card is perpendicular)
+        setTimeout(() => {
+          if (streakDisplayMode === "current") {
+            streakDisplayMode = "todayBest";
+            document.getElementById("streakLabel").textContent = "Today's Best";
+            document.getElementById("streakDisplay").textContent =
+              todayBestStreak;
+            // Update dots
+            document.getElementById("streakDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400/30";
+            document.getElementById("streakDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400";
+            document.getElementById("streakDot3").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400/30";
+          } else if (streakDisplayMode === "todayBest") {
+            streakDisplayMode = "allTimeBest";
+            document.getElementById("streakLabel").textContent =
+              "All-Time Best";
+            document.getElementById("streakDisplay").textContent =
+              allTimeBestStreak;
+            // Update dots
+            document.getElementById("streakDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400/30";
+            document.getElementById("streakDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400/30";
+            document.getElementById("streakDot3").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400";
+          } else {
+            streakDisplayMode = "current";
+            document.getElementById("streakLabel").textContent = "Win Streak";
+            document.getElementById("streakDisplay").textContent = winStreak;
+            // Update dots
+            document.getElementById("streakDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400";
+            document.getElementById("streakDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400/30";
+            document.getElementById("streakDot3").className =
+              "w-1.5 h-1.5 rounded-full bg-purple-400/30";
+          }
+        }, 200);
+
+        // Remove animation class after completion
+        setTimeout(() => {
+          streakBlock.classList.remove("flip-animation");
+        }, 400);
+      }
+
+      // Cycle attempts display between today, streak, and all-time
+      function cycleAttemptsDisplay() {
+        const attemptsBlock = document.getElementById("attemptsBlock");
+
+        // Add flip animation
+        attemptsBlock.classList.add("flip-animation");
+
+        // Change content at the midpoint of the flip (when card is perpendicular)
+        setTimeout(() => {
+          if (attemptsDisplayMode === "today") {
+            attemptsDisplayMode = "streak";
+            document.getElementById("attemptsLabel").textContent =
+              "Streak Attempts";
+            document.getElementById("attemptsDisplay").textContent =
+              streakAttempts;
+            // Update dots
+            document.getElementById("attemptsDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400/30";
+            document.getElementById("attemptsDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400";
+            document.getElementById("attemptsDot3").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400/30";
+          } else if (attemptsDisplayMode === "streak") {
+            attemptsDisplayMode = "alltime";
+            document.getElementById("attemptsLabel").textContent =
+              "All-Time Attempts";
+            document.getElementById("attemptsDisplay").textContent =
+              totalAttempts;
+            // Update dots
+            document.getElementById("attemptsDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400/30";
+            document.getElementById("attemptsDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400/30";
+            document.getElementById("attemptsDot3").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400";
+          } else {
+            attemptsDisplayMode = "today";
+            document.getElementById("attemptsLabel").textContent =
+              "Today's Attempts";
+            document.getElementById("attemptsDisplay").textContent =
+              dailyAttempts;
+            // Update dots
+            document.getElementById("attemptsDot1").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400";
+            document.getElementById("attemptsDot2").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400/30";
+            document.getElementById("attemptsDot3").className =
+              "w-1.5 h-1.5 rounded-full bg-blue-400/30";
+          }
+        }, 200);
+
+        // Remove animation class after completion
+        setTimeout(() => {
+          attemptsBlock.classList.remove("flip-animation");
+        }, 400);
+      }
+
+      function updateStats() {
+        // Update wins display based on current mode
+        if (winsDisplayMode === "today") {
+          document.getElementById("winsDisplay").textContent = dailyWins;
+        } else {
+          document.getElementById("winsDisplay").textContent = allTimeWins;
+        }
+
+        // Update streak display based on current mode
+        if (streakDisplayMode === "current") {
+          document.getElementById("streakDisplay").textContent = winStreak;
+        } else if (streakDisplayMode === "todayBest") {
+          document.getElementById("streakDisplay").textContent =
+            todayBestStreak;
+        } else {
+          document.getElementById("streakDisplay").textContent =
+            allTimeBestStreak;
+        }
+
+        // Update attempts display based on current mode
+        if (attemptsDisplayMode === "today") {
+          document.getElementById("attemptsDisplay").textContent =
+            dailyAttempts;
+        } else if (attemptsDisplayMode === "streak") {
+          document.getElementById("attemptsDisplay").textContent =
+            streakAttempts;
+        } else {
+          document.getElementById("attemptsDisplay").textContent =
+            totalAttempts;
+        }
+
+        progressText.textContent = rollCount + "/10";
+        progressBar.style.width = (rollCount / 10) * 100 + "%";
+
+        if (totalAttempts > 0) {
+          const successRate = ((allTimeWins / totalAttempts) * 100).toFixed(1);
+          document.getElementById("userSuccessRate").textContent =
+            successRate + "%";
+        }
+
+        if (rollCount > 0 && !gameOver) {
+          const prob = Math.pow(5 / 6, rollCount) * 100;
+          currentProb.textContent = prob.toFixed(1) + "%";
+          liveProb.classList.remove("hidden");
+
+          intensityMessage.querySelector("div").textContent =
+            getIntensityMessage(rollCount);
+          intensityMessage.classList.remove("hidden");
+        } else {
+          intensityMessage.classList.add("hidden");
+          liveProb.classList.add("hidden");
+        }
+
+        // Save after every update
+        saveGameData();
+      }
+
+      function rollDice() {
+        if (gameOver || isRolling || rollCount >= 10) return;
+
+        isRolling = true;
+        diceContainer.classList.add("bounce-animation");
+
+        // Animate rolling
+        let rolls = 0;
+        const rollInterval = setInterval(() => {
+          const tempRoll = Math.floor(Math.random() * 6) + 1;
+          dice.style.backgroundColor = diceColors[tempRoll];
+          dice.className =
+            "w-40 h-40 rounded-3xl shadow-2xl flex items-center justify-center transform transition-all duration-100";
+          dice.innerHTML = `<div class="text-8xl font-black text-white drop-shadow-2xl">${tempRoll}</div>`;
+          rolls++;
+
+          if (rolls >= 10) {
+            clearInterval(rollInterval);
+            finishRoll();
+          }
+        }, 100);
+      }
+
+      function finishRoll() {
+        setTimeout(() => {
+          const result = Math.floor(Math.random() * 6) + 1;
+          currentRoll = result;
+
+          dice.style.backgroundColor = diceColors[result];
+          dice.className =
+            "w-40 h-40 rounded-3xl shadow-2xl flex items-center justify-center transform transition-all duration-300 hover:scale-105";
+
+          if (result === 1) {
+            dice.classList.add("scale-110", "ring-8", "ring-red-500/50");
+          } else if (result === 2) {
+            dice.classList.add("ring-4", "ring-orange-500/50");
+          }
+
+          dice.innerHTML = `<div class="text-8xl font-black text-white drop-shadow-2xl">${result}</div>`;
+
+          diceContainer.classList.remove("bounce-animation");
+          isRolling = false;
+
+          if (result === 1) {
+            // LOSS
+            gameOver = true;
+            totalAttempts++;
+            dailyAttempts++;
+            streakAttempts++;
+
+            if (rollCount > bestStreak) {
+              bestStreak = rollCount;
+            }
+
+            if (winStreak > 0) {
+              streakAttempts = 0; // Reset streak attempts on loss
+            }
+
+            winStreak = 0; // Reset win streak on loss
+
+            // Build personal best info for signed-in users
+            let personalBestHtml = '';
+            if (firebaseReady && currentUser) {
+              fetchUserBest('alltime').then(best => {
+                if (best) {
+                  const bestEl = document.getElementById('lossPersonalBest');
+                  if (bestEl) {
+                    bestEl.innerHTML = `<div class="text-sm text-gray-400 mt-3">Your best: ${best.streak} streak in ${best.attempts} attempts</div>`;
+                  }
+                }
+              });
+            }
+
+            gameStatus.innerHTML = `
+                        <div class="pulse-slow">
+                            <div class="text-4xl font-black text-red-500 mb-2 drop-shadow-lg">
+                                💀 BUSTED! 💀
+                            </div>
+                            <div class="text-xl text-red-300">
+                                You rolled a 1 on roll #${rollCount + 1}
+                            </div>
+                            ${
+                              rollCount >= 7
+                                ? `<div class="text-lg text-yellow-400 mt-2 font-bold">SO CLOSE! Only ${
+                                    10 - rollCount
+                                  } away from victory!</div>`
+                                : ""
+                            }
+                            <div id="lossPersonalBest"></div>
+                        </div>
+                    `;
+            gameStatus.classList.remove("hidden");
+
+            actionButton.textContent = "START OVER";
+            actionButton.className =
+              "px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-xl font-black rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-200 uppercase tracking-wider border-2 border-green-400";
+          } else {
+            // SUCCESS
+            rollCount++;
+
+            if (rollCount === 10) {
+              // WIN!
+              gameOver = true;
+              totalAttempts++;
+              dailyAttempts++;
+              bestStreak = 10;
+              dailyWins++; // Increment total daily wins
+              allTimeWins++; // Increment all-time wins
+              winStreak++; // Increment consecutive win streak
+
+              // Update best streaks
+              if (winStreak > todayBestStreak) {
+                todayBestStreak = winStreak;
+              }
+              if (winStreak > allTimeBestStreak) {
+                allTimeBestStreak = winStreak;
+              }
+
+              gameStatus.innerHTML = `
+                            <div class="bounce-animation">
+                                <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 mb-2 drop-shadow-2xl">
+                                    🎉 JACKPOT! 🎉
+                                </div>
+                                <div class="text-2xl text-green-400 font-bold">
+                                    YOU BEAT THE ODDS!
+                                </div>
+                                <div class="text-sm text-gray-400 mt-2">
+                                    Only 16.2% of players make it this far!
+                                </div>
+                            </div>
+                        `;
+              gameStatus.classList.remove("hidden");
+
+              actionButton.insertAdjacentHTML(
+                "beforebegin",
+                '<button onclick="shareScore()" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">📤 Share Your Victory</button>'
+              );
+
+              // Add save to leaderboard button
+              if (firebaseReady) {
+                actionButton.insertAdjacentHTML(
+                  "beforebegin",
+                  '<button id="saveToLeaderboardBtn" onclick="saveScoreToLeaderboard()" class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">🏆 Save to Leaderboard</button>'
+                );
+              }
+
+              actionButton.textContent = "🔄 CONTINUE STREAK";
+              actionButton.className =
+                "px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-xl font-black rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-200 uppercase tracking-wider border-2 border-green-400";
+            } else {
+              actionButton.textContent = "🎲 ROLL AGAIN";
+            }
+          }
+
+          updateStats();
+        }, 100);
+      }
+
+      function reset() {
+        currentRoll = null;
+        rollCount = 0;
+        gameOver = false;
+
+        dice.style.backgroundColor = "";
+        dice.className =
+          "w-40 h-40 bg-slate-700 rounded-3xl shadow-2xl flex items-center justify-center border-4 border-dashed border-purple-500/50";
+        dice.innerHTML = '<span class="text-6xl">🎲</span>';
+
+        gameStatus.classList.add("hidden");
+        gameStatus.innerHTML = "";
+
+        // Remove share button if it exists
+        const shareButton = document.querySelector(
+          'button[onclick="shareScore()"]'
+        );
+        if (shareButton) {
+          shareButton.remove();
+        }
+
+        // Remove save to leaderboard button if it exists
+        const saveBtn = document.getElementById("saveToLeaderboardBtn");
+        if (saveBtn) {
+          saveBtn.remove();
+        }
+
+        actionButton.textContent = "🎲 START GAME";
+        actionButton.className =
+          "px-12 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl font-black rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-200 uppercase tracking-wider border-2 border-purple-400";
+
+        updateStats();
+      }
+
+      // Share score function (Wordle-style)
+      function shareScore() {
+        const today = new Date().toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        const shareText = `Never Roll a 1 🎲 ${today}
+
+Win Streak: ${winStreak} 🔥
+Total Attempts: ${totalAttempts}
+Today's Wins: ${dailyWins}
+
+neverrollone.com`;
+
+        // Try to use native share API (mobile)
+        if (navigator.share) {
+          navigator
+            .share({
+              text: shareText,
+            })
+            .catch((err) => console.log("Share cancelled"));
+        } else {
+          // Fallback: Copy to clipboard
+          navigator.clipboard.writeText(shareText).then(() => {
+            // Show copied message
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = "✅ Copied!";
+            setTimeout(() => {
+              btn.textContent = originalText;
+            }, 2000);
+          });
+        }
+      }
+
+      actionButton.addEventListener("click", () => {
+        if (gameOver) {
+          reset();
+        } else {
+          rollDice();
+        }
+      });
+
+      // Handle Enter key for display name input
+      document.getElementById("displayNameInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") saveDisplayName();
+      });
+
+      // Initialize - Load saved data
+      loadGameData();
+      updateStats();
+
+      // Handle ad visibility based on SHOW_ADS toggle
+      const topBanner = document.getElementById("topBannerAd");
+      const bottomBanner = document.getElementById("bottomBannerAd");
+      const mainContent = document.getElementById("mainContent");
+
+      if (!SHOW_ADS) {
+        topBanner.style.display = "none";
+        bottomBanner.style.display = "none";
+        // Add top padding when ads are hidden
+        mainContent.style.paddingTop = "2rem";
+      }
+    </script>
+  </body>
+</html>
