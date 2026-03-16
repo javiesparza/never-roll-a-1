@@ -693,6 +693,8 @@
         document.getElementById("displayNameInput").focus();
       }
 
+      let pendingSaveToLeaderboard = false;
+
       async function saveDisplayName() {
         const input = document.getElementById("displayNameInput");
         const errorEl = document.getElementById("displayNameError");
@@ -720,6 +722,12 @@
           userDisplayName = name;
           document.getElementById("displayNameModal").classList.add("hidden");
           updateLeaderboardAuthUI();
+
+          // Complete the pending save that triggered the display name modal
+          if (pendingSaveToLeaderboard) {
+            pendingSaveToLeaderboard = false;
+            saveScoreToLeaderboard();
+          }
         } catch (e) {
           errorEl.textContent = "Failed to save. Please try again.";
           errorEl.classList.remove("hidden");
@@ -770,6 +778,7 @@
         }
 
         if (!userDisplayName) {
+          pendingSaveToLeaderboard = true;
           openDisplayNameModal();
           return;
         }
@@ -786,7 +795,7 @@
             userId: currentUser.uid,
             displayName: userDisplayName,
             streak: winStreak,
-            attempts: dailyAttempts,
+            attempts: streakAttempts,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           };
 
@@ -1005,7 +1014,7 @@
               </div>
               <div class="text-right flex-shrink-0">
                 <div class="font-black text-yellow-400">${entry.streak}</div>
-                <div class="text-xs text-gray-400">${entry.attempts} att.</div>
+                <div class="text-xs text-gray-400">${entry.attempts} attempts</div>
               </div>
             </div>
           `;
@@ -1080,6 +1089,37 @@
             </div>
           </div>
         `;
+      }
+
+      async function autoSaveScore() {
+        if (!firebaseReady || !currentUser || !userDisplayName) return false;
+        try {
+          const today = getTodayString();
+          const newScore = {
+            userId: currentUser.uid,
+            displayName: userDisplayName,
+            streak: winStreak,
+            attempts: streakAttempts,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          const dailyDocId = `${currentUser.uid}_${today}`;
+          const dailyRef = db.collection("dailyScores").doc(dailyDocId);
+          const dailyDoc = await dailyRef.get();
+          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, dailyDoc.exists ? dailyDoc.data() : null)) {
+            await dailyRef.set({ ...newScore, date: today });
+          }
+
+          const allTimeRef = db.collection("allTimeScores").doc(currentUser.uid);
+          const allTimeDoc = await allTimeRef.get();
+          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, allTimeDoc.exists ? allTimeDoc.data() : null)) {
+            await allTimeRef.set(newScore);
+          }
+          return true;
+        } catch (e) {
+          console.error("Auto-save score error:", e);
+          return false;
+        }
       }
 
       function showSaveSuccess() {
@@ -1446,8 +1486,17 @@
                 '<button onclick="shareScore()" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">📤 Share Your Victory</button>'
               );
 
-              // Add save to leaderboard button
-              if (firebaseReady) {
+              // Auto-save if logged in, otherwise show manual button
+              if (firebaseReady && currentUser && userDisplayName) {
+                autoSaveScore().then(saved => {
+                  if (saved) {
+                    actionButton.insertAdjacentHTML(
+                      "beforebegin",
+                      '<div id="autoSavedMsg" class="text-sm text-green-400 font-bold">✅ Leaderboard updated</div>'
+                    );
+                  }
+                });
+              } else if (firebaseReady) {
                 actionButton.insertAdjacentHTML(
                   "beforebegin",
                   '<button id="saveToLeaderboardBtn" onclick="saveScoreToLeaderboard()" class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">🏆 Save to Leaderboard</button>'
@@ -1491,6 +1540,12 @@
         const saveBtn = document.getElementById("saveToLeaderboardBtn");
         if (saveBtn) {
           saveBtn.remove();
+        }
+
+        // Remove auto-saved message if it exists
+        const autoSavedMsg = document.getElementById("autoSavedMsg");
+        if (autoSavedMsg) {
+          autoSavedMsg.remove();
         }
 
         actionButton.textContent = "🎲 START GAME";
