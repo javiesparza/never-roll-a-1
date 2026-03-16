@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Never Roll a 1 | Frequently Asked Questions</title>
+    <meta name="description" content="Frequently asked questions about Never Roll a 1. Learn about game randomness, winning odds, leaderboard, mobile support, data safety, and more.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://neverrollone.com/faq.html">
+    <meta property="og:title" content="FAQ - Never Roll a 1 | Frequently Asked Questions">
+    <meta property="og:description" content="Get answers to common questions about Never Roll a 1: randomness, odds, leaderboard, mobile play, data safety, and more.">
+    <meta property="og:image" content="https://neverrollone.com/preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://neverrollone.com/faq.html">
+    <meta property="twitter:title" content="FAQ - Never Roll a 1">
+    <meta property="twitter:description" content="Common questions and answers about the Never Roll a 1 dice probability game.">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+    <div class="max-w-4xl mx-auto p-8">
+        <div class="mb-8">
+            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
+        </div>
+
+        <h1 class="text-4xl font-bold mb-8">Frequently Asked Questions</h1>
+
+        <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-6 text-gray-300">
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Is the dice roll truly random?</h2>
+                <p>
+                    Yes. The game uses JavaScript's built-in <code class="text-purple-400 bg-slate-700/50 px-1.5 py-0.5 rounded text-sm">Math.random()</code> function, which generates pseudorandom numbers using your browser's random number generator. While no software-based RNG is "truly" random in a cryptographic sense, the algorithm produces results that are statistically indistinguishable from fair dice rolls for gaming purposes. Every roll is independent, meaning previous results have absolutely no effect on future outcomes.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">What are my actual odds of winning?</h2>
+                <p>
+                    Your chance of winning a single game (surviving 10 rolls without a 1) is exactly 16.15%, or roughly 1 in 6.2 attempts. This comes from the formula (5/6)^10. Each roll has a 5 out of 6 chance of being safe, and multiplying that probability across ten independent rolls gives you the overall win rate. For a deeper dive into the math, visit our <a href="probability-guide.html" class="text-purple-400 hover:underline">Probability Guide</a>.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">I keep losing. Is the game rigged?</h2>
+                <p>
+                    The game is not rigged. With an 83.85% chance of losing each round, most attempts end in failure. Losing several games in a row is not only possible but expected. The probability of losing 10 games in a row is about 16.8%, meaning roughly one in six players who play exactly 10 games will not win any of them. If you feel the game is unfairly difficult, it is actually a demonstration of how poorly human intuition handles compound probability. We expect each roll to be easy (83.3% success), so we underestimate how quickly those probabilities stack against us.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">How does the leaderboard work?</h2>
+                <p>
+                    The leaderboard tracks the highest win streaks among players who sign in with Google. It has two tabs: Daily (top 10 scores for today) and All-Time (top 25 scores ever). Scores are ranked primarily by win streak length, with total attempts as a tiebreaker (fewer attempts is better). Your score is only updated when you achieve a new personal best, so playing more games never lowers your ranking. You can save your score after any win using the "Save to Leaderboard" button.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Do I need an account to play?</h2>
+                <p>
+                    No. The game is fully playable without signing in. All game statistics (wins, streaks, attempts) are stored locally in your browser and do not require an account. Signing in with Google is only needed if you want to save scores to the leaderboard and compare your performance with other players.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Does the game work on mobile devices?</h2>
+                <p>
+                    Yes. Never Roll a 1 is fully responsive and works on smartphones and tablets of all sizes. The interface adapts to smaller screens, and all features including rolling, stats tracking, sharing, and the leaderboard work on mobile browsers. For the best experience, use a modern browser like Chrome, Safari, Firefox, or Edge.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Is my data safe?</h2>
+                <p>
+                    Yes. Game statistics (scores, streaks, attempt counts) are stored locally in your browser's localStorage, meaning they never leave your device unless you choose to save a score to the leaderboard. If you sign in for the leaderboard, we store only your display name, user ID, win streak, and attempt count in our database. We do not access or store your email, Google profile data, or any other personal information. For full details, see our <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a>.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Why did my stats reset?</h2>
+                <p>
+                    Daily stats (today's wins, today's attempts, current win streak) reset automatically at midnight local time. This is by design so that the daily leaderboard tracks fresh competition each day. All-time stats (total wins, total attempts, all-time best streak) are preserved across days. If all your stats disappeared, you may have cleared your browser's local storage, used a private/incognito window, or switched to a different browser or device. Since data is stored locally, it does not sync between devices.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Can I play offline?</h2>
+                <p>
+                    The core game requires an initial page load from the internet, but once loaded, the dice rolling and stats tracking work without an active connection since all game logic runs in your browser. However, leaderboard features, ads, and saving scores to the server require an internet connection. If you lose connectivity mid-session, your local stats will still be saved.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">How can I suggest a new feature?</h2>
+                <p>
+                    We love hearing from players! Visit our <a href="contact.html" class="text-purple-400 hover:underline">Contact page</a> to send suggestions, bug reports, or general feedback. We read every message and seriously consider feature requests from the community. Past player suggestions have directly influenced the development of features like the win streak tracker and daily leaderboard.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Is this a gambling game?</h2>
+                <p>
+                    No. Never Roll a 1 is a free entertainment and educational game. No real money is wagered, no purchases are required, and no monetary prizes are offered. The game is designed to teach and demonstrate probability concepts in an engaging way. It is suitable for all ages. For our full legal terms, see the <a href="terms.html" class="text-purple-400 hover:underline">Terms of Service</a>.
+                </p>
+            </section>
+
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl">
+                Back to Game
+            </a>
+        </div>
+
+        <!-- Footer Navigation -->
+        <div class="mt-12 text-center text-sm text-gray-500 space-y-2">
+            <div class="space-x-4">
+                <a href="index.html" class="hover:text-purple-400">Play</a>
+                <span>·</span>
+                <a href="how-to-play.html" class="hover:text-purple-400">How to Play</a>
+                <span>·</span>
+                <a href="probability-guide.html" class="hover:text-purple-400">Probability Guide</a>
+                <span>·</span>
+                <a href="dice-facts.html" class="hover:text-purple-400">Dice Facts</a>
+                <span>·</span>
+                <a href="faq.html" class="hover:text-purple-400">FAQ</a>
+            </div>
+            <div class="space-x-4">
+                <a href="about.html" class="hover:text-purple-400">About</a>
+                <span>·</span>
+                <a href="privacy.html" class="hover:text-purple-400">Privacy Policy</a>
+                <span>·</span>
+                <a href="terms.html" class="hover:text-purple-400">Terms of Service</a>
+                <span>·</span>
+                <a href="contact.html" class="hover:text-purple-400">Contact</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

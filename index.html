@@ -412,13 +412,28 @@
 
     <!-- Footer Links -->
     <div
-      class="max-w-4xl mx-auto text-center py-4 text-sm text-gray-500 space-x-4 relative z-10 mb-24"
+      class="max-w-4xl mx-auto text-center py-4 text-sm text-gray-500 relative z-10 mb-24 space-y-2"
     >
-      <a href="about.html" class="hover:text-purple-400">About</a>
-      <span>•</span>
-      <a href="privacy.html" class="hover:text-purple-400">Privacy Policy</a>
-      <span>•</span>
-      <a href="contact.html" class="hover:text-purple-400">Contact</a>
+      <div class="space-x-4">
+        <a href="index.html" class="hover:text-purple-400">Play</a>
+        <span>·</span>
+        <a href="how-to-play.html" class="hover:text-purple-400">How to Play</a>
+        <span>·</span>
+        <a href="probability-guide.html" class="hover:text-purple-400">Probability Guide</a>
+        <span>·</span>
+        <a href="dice-facts.html" class="hover:text-purple-400">Dice Facts</a>
+        <span>·</span>
+        <a href="faq.html" class="hover:text-purple-400">FAQ</a>
+      </div>
+      <div class="space-x-4">
+        <a href="about.html" class="hover:text-purple-400">About</a>
+        <span>·</span>
+        <a href="privacy.html" class="hover:text-purple-400">Privacy Policy</a>
+        <span>·</span>
+        <a href="terms.html" class="hover:text-purple-400">Terms of Service</a>
+        <span>·</span>
+        <a href="contact.html" class="hover:text-purple-400">Contact</a>
+      </div>
     </div>
 
     <!-- Leaderboard Modal -->
@@ -473,14 +488,13 @@
     <script>
       // ===== Firebase Configuration =====
       const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyDMh3gA61VM5f1A84rwGso_iSGnaLfYHlk",
+        authDomain: "neverrollone.firebaseapp.com",
+        projectId: "neverrollone",
+        storageBucket: "neverrollone.firebasestorage.app",
+        messagingSenderId: "684267904064",
+        appId: "1:684267904064:web:00849185d9dc2b7dca93a5"
       };
-      // TODO: Replace with actual Firebase config
 
       /*
         Firestore Security Rules:
@@ -528,7 +542,7 @@
       }
 
       // Ad Toggle - Set to true to show ads, false to hide
-      const SHOW_ADS = false;
+      const SHOW_ADS = true;
 
       // Game State
       let currentRoll = null;
