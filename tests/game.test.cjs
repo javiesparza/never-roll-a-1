@@ -120,7 +120,12 @@ function setup(options = {}) {
       if (options.popupGate) return options.popupGate.promise;
       return { user: { uid: "test-user" } };
     },
-    async signOut() { signOutCalls++; }
+    async signOut() {
+      signOutCalls++;
+      if (options.signOutError) throw new Error("Sign-out failed");
+      if (options.notifySignOut) await authCallback(null);
+      if (options.signOutGate) await options.signOutGate.promise;
+    }
   };
   const firebase = {
     initializeApp() {},
@@ -456,4 +461,59 @@ test("persistent stats restore accurately after a completed win", () => {
   const restored = setup({ saved: game.saved.get("neverRollOneData") });
   assert.deepEqual(Array.from(restored.run("[totalAttempts, allTimeWins, winStreak, streakAttempts, dailyAttempts, dailyWins]")),
     [1, 1, 1, 1, 1, 1]);
+});
+
+test("sign-out callback before promise completion does not strand leaderboard loading", async () => {
+  const signOutGate = deferred();
+  const scores = deferred();
+  const game = setup({ notifySignOut: true, signOutGate });
+  game.context.pendingScores = scores.promise;
+  game.run('currentUser = {uid: "test-user"}; userDisplayName = "Tester"; fetchDailyLeaderboard = () => pendingScores; openLeaderboard();');
+  const signOut = game.run("signOutUser()");
+  assert.equal(game.run("currentUser"), null);
+  const revisionAfterCallback = game.run("authRevision");
+  assert.match(game.elements.get("leaderboardContent").innerHTML, /Loading scores/);
+  signOutGate.resolve();
+  await signOut;
+  assert.equal(game.run("authRevision"), revisionAfterCallback);
+  scores.resolve([{ displayName: "Public score", streak: 1, attempts: 1 }]);
+  await scores.promise;
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.match(game.elements.get("leaderboardContent").innerHTML, /Public score/);
+  assert.doesNotMatch(game.elements.get("leaderboardContent").innerHTML, /Loading scores/);
+});
+
+test("name cancellation with an early auth callback refreshes pending leaderboard data", async () => {
+  const signOutGate = deferred();
+  const scores = deferred();
+  const game = setup({ notifySignOut: true, signOutGate });
+  game.context.pendingScores = scores.promise;
+  game.run('currentUser = {uid: "test-user"}; fetchDailyLeaderboard = () => pendingScores; openLeaderboard();');
+  const name = game.run("openDisplayNameModal()");
+  const cancel = game.run("cancelDisplayName()");
+  assert.equal(await name, false);
+  signOutGate.resolve();
+  await cancel;
+  scores.resolve([{ displayName: "After cancel", streak: 2, attempts: 2 }]);
+  await scores.promise;
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.match(game.elements.get("leaderboardContent").innerHTML, /After cancel/);
+  assert.doesNotMatch(game.elements.get("leaderboardContent").innerHTML, /Loading scores/);
+});
+
+test("failed sign-in cleanup refreshes leaderboard even when sign-out cannot notify", async () => {
+  const scores = deferred();
+  const game = setup({ signOutError: true });
+  game.context.pendingScores = scores.promise;
+  game.run('currentUser = {uid: "test-user"}; fetchDailyLeaderboard = () => pendingScores; openLeaderboard();');
+  await game.run("clearFailedSignIn()");
+  scores.resolve([{ displayName: "After cleanup", streak: 1, attempts: 1 }]);
+  await scores.promise;
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(game.run("currentUser"), null);
+  assert.match(game.elements.get("leaderboardContent").innerHTML, /After cleanup/);
+  assert.doesNotMatch(game.elements.get("leaderboardContent").innerHTML, /Loading scores/);
 });

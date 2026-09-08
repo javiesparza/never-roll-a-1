@@ -745,17 +745,19 @@
           catch (e) { setStatus("Could not confirm sign-out. Automatic score submission is paused; reload to check your session."); }
         }
         updateLeaderboardAuthUI();
+        refreshLeaderboardIfOpen();
       }
 
       async function signOutUser() {
         if (!firebaseReady) return;
         try {
           await auth.signOut();
-          authRevision++;
+          if (currentUser) authRevision++;
           currentUser = null;
           userDisplayName = null;
           resolveNameRequest(false);
           updateLeaderboardAuthUI();
+          refreshLeaderboardIfOpen();
           setStatus("Signed out. Automatic submission is off.");
         } catch (e) {
           setStatus("Sign-out failed. Please check your connection and try again.");
@@ -861,9 +863,7 @@
           }
           updateLeaderboardAuthUI();
           updateSaveToLeaderboardButton();
-          if (!document.getElementById("leaderboardModal").classList.contains("hidden")) {
-            loadLeaderboardData(currentLeaderboardTab);
-          }
+          refreshLeaderboardIfOpen();
         });
       }
 
@@ -982,6 +982,12 @@
           document.getElementById("tabAllTime").className = "tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200";
         }
         loadLeaderboardData(tab);
+      }
+
+      function refreshLeaderboardIfOpen() {
+        if (!document.getElementById("leaderboardModal").classList.contains("hidden")) {
+          loadLeaderboardData(currentLeaderboardTab);
+        }
       }
 
       async function loadLeaderboardData(tab) {
