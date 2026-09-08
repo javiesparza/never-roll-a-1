@@ -40,6 +40,8 @@ python3 -m http.server 8080 --directory dist
 
 Open `http://localhost:8080`. The build compiles all root HTML classes into `assets/styles.css` and copies only public pages/assets into `dist`. Generated CSS, `dist`, and `node_modules` are ignored by Git. Run the build again after editing HTML or Tailwind classes; do not use Tailwind's runtime CDN in production. The Node built-in test runner needs no additional testing dependency.
 
+Game regression tests execute the actual inline application script with mocked browser and Firebase interfaces. They do not replace visual/mobile browser testing or Firestore emulator tests. No Firebase emulator or authenticated deployment was available during this change; validate the new rules against the access-control checklist below before deploying them.
+
 The core game continues working offline after its initial load. A fresh offline visit is not supported. Firebase, external reference links, and remote score saving require connectivity. If storage is blocked or corrupt, gameplay remains available with a visible persistence warning.
 
 ### With Leaderboard

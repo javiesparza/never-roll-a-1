@@ -67,7 +67,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">What Is Public</h2>
                 <p>The daily and all-time score collections are publicly readable, including account-linked <code>userId</code> values, names, results, and timestamps. This is broader than the top entries currently displayed in the leaderboard. Others may copy public records. Choose a display name that does not reveal personal information, and do not submit someone else's private information.</p>
-                <p class="mt-3">Midnight UTC starts a new daily view and resets daily wins and attempts, while an active win streak carries over. It does not delete previous daily records from Firestore. All-time records are also separate from local browser statistics.</p>
+                <p class="mt-3">Midnight UTC starts a new daily view and resets local daily wins, attempts, best streak, current win streak, and streak-attempt count, including while the game remains open. Local all-time totals and best streak persist. This reset does not delete previous daily records from Firestore. Cloud score records are separate from local browser statistics.</p>
             </section>
 
             <section>

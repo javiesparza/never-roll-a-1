@@ -162,6 +162,7 @@ test("homepage has local CSS, educational identity, disabled ads, and accessible
   assert.doesNotMatch(html, /adsbygoogle|googlesyndication|SHOW_ADS|cdn\.tailwindcss|JACKPOT|% of players/);
   assert.match(html, /rel="canonical" href="https:\/\/neverrollone\.com\/"/);
   assert.match(html, /href="\/assets\/styles\.css"/);
+  assert.match(html, /<meta name="google-adsense-account" content="ca-pub-6398871668173615"\s*\/>/);
   assert.match(html, /<h1\b[^>]*>Never Roll a 1<\/h1>/);
   assert.match(html, /<noscript>/);
   assert.match(html, /No wagers/);
@@ -221,25 +222,31 @@ test("remaining-win probability, round explanation, observed rate, and attempts 
   assert.deepEqual(Array.from(game.run("[totalAttempts, streakAttempts, winStreak]")), [3, 1, 0]);
 });
 
-test("UTC rollover resets idle daily stats but preserves all-time and ongoing streak state", () => {
+test("UTC rollover resets idle daily stats and current streak but preserves all-time stats", () => {
   const game = setup();
   game.run("totalAttempts = 8; dailyAttempts = 8; allTimeWins = 4; dailyWins = 4; winStreak = 2; streakAttempts = 3; todayBestStreak = 2; allTimeBestStreak = 3;");
   game.setNow("2026-09-09T00:00:00Z");
   [...game.intervals.values()].find(timer => timer.delay === 1000).fn();
   assert.deepEqual(Array.from(game.run("[dailyWins, dailyAttempts, todayBestStreak, allTimeWins, totalAttempts, winStreak, streakAttempts, allTimeBestStreak]")),
-    [0, 0, 0, 4, 8, 2, 3, 3]);
+    [0, 0, 0, 4, 8, 0, 0, 3]);
   assert.equal(JSON.parse(game.saved.get("neverRollOneData")).lastPlayedDate, "2026-09-09");
   assert.equal(game.run("getTodayString()"), "2026-09-09");
 });
 
 test("a round ending across UTC midnight belongs to its completion date", () => {
   const game = setup();
+  game.run("winStreak = 3; streakAttempts = 3; allTimeWins = 3; totalAttempts = 3; allTimeBestStreak = 3;");
   for (let i = 0; i < 9; i++) game.roll();
   game.setNow("2026-09-09T00:00:00Z");
   game.roll();
   assert.equal(game.run("winningScore.date"), "2026-09-09");
   assert.equal(game.run("dailyWins"), 1);
   assert.equal(game.run("dailyAttempts"), 1);
+  assert.equal(game.run("winningScore.streak"), 1);
+  assert.equal(game.run("winningScore.attempts"), 1);
+  assert.equal(game.run("allTimeWins"), 4);
+  assert.equal(game.run("totalAttempts"), 4);
+  assert.equal(game.run("allTimeBestStreak"), 3);
 });
 
 test("leaderboard fetch failures are visible, not false empty leaderboards", async () => {

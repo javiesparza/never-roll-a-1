@@ -81,7 +81,7 @@
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">Win Streaks Explained</h2>
                 <p>
-                    A win streak counts how many consecutive games you win without a loss. When you successfully complete a round (reach 10/10), your win streak increments by one. If you lose the next round by rolling a 1, the streak resets to zero. Building a long win streak is extremely difficult because even a single loss breaks the chain.
+                    A win streak counts consecutive wins within the current UTC day. When you successfully complete a round (reach 10/10), your win streak increments by one. A loss resets it to zero. Midnight UTC also resets the current win streak and streak-attempt counter, even if the page remains open; your saved all-time best is retained.
                 </p>
                 <p class="mt-3">
                     Before a specified sequence begins, the chance of winning its next two games is approximately 2.61%; for the next three it is 0.4213%. Winning the next five has probability (5/6)<sup>50</sup>, approximately one in 9,100. These are probabilities for a specified block of games, not the chance of eventually finding a streak somewhere in a longer session. A streak is a record of outcomes, not evidence of a skill advantage.
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <p class="mt-3">
-                    Personal statistics are saved in this browser's local storage when it is available. Clearing site data, using another browser, or ending a private-browsing session can remove or separate that record. Signing in does not turn all local statistics into a cross-device history. Today's statistics and the daily leaderboard use midnight UTC, which may fall at a different local time.
+                    Personal statistics are saved in this browser's local storage when it is available. Clearing site data, using another browser, or ending a private-browsing session can remove or separate that record. Signing in does not turn all local statistics into a cross-device history. Today's wins, attempts, and best streak reset at midnight UTC, matching the daily leaderboard's date boundary. All-time totals and best streak persist. Midnight does not clear an active round's roll progress; its result counts on the UTC date when it finishes.
                 </p>
                 <p class="mt-3">
                     Your displayed success rate describes recorded results; it is not a forecast. For example, two wins in ten completed attempts is 20%, but the next fresh attempt still has a theoretical win chance of approximately 16.15%. A round still in progress is not included in that calculation.

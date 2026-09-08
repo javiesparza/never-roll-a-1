@@ -195,7 +195,7 @@
       <noscript><p class="mb-4">JavaScript is required to play and view the leaderboard. You can still read the rules and educational pages linked above.</p></noscript>
       <p id="storageStatus" role="status" class="text-sm text-gray-300 mb-3">Stats are saved in this browser when storage is available.</p>
       <p id="appStatus" role="status" class="text-sm text-yellow-400 mb-3"></p>
-      <p class="text-sm text-gray-300 mb-3">Daily stats and leaderboard dates use UTC and reset at 00:00 UTC. All-time stats stay in this browser.</p>
+      <p class="text-sm text-gray-300 mb-3">Daily stats, current win streak, and streak attempts reset at 00:00 UTC. An unfinished round continues and counts on its completion date. All-time stats stay in this browser.</p>
       <!-- Leaderboard Button -->
       <div class="flex justify-end mb-4">
         <button
@@ -207,7 +207,7 @@
       </div>
 
       <!-- Header Stats -->
-      <p id="statsHelp" class="text-sm text-gray-300 mb-3">Select a stats button to cycle its views. Streak attempts include completed rounds since the last broken win streak, including losses before its first win.</p>
+      <p id="statsHelp" class="text-sm text-gray-300 mb-3">Select a stats button to cycle its views. Streak attempts include completed rounds since the last broken win streak or UTC daily reset, including losses before its first win.</p>
       <div id="statsGrid" class="grid grid-cols-3 gap-4 mb-8">
         <button type="button" aria-labelledby="winsLabel winsDisplay" aria-describedby="statsHelp"
           id="winsBlock"
@@ -440,7 +440,7 @@
           <!-- Auth Section -->
           <div id="leaderboardAuthSection" class="px-5 pt-4"></div>
           <p class="px-5 pt-4 text-sm text-gray-300">Names and scores are public. After signing in and choosing a name, winning scores are submitted automatically.
-            Daily scores use UTC; a streak can span days. Scores are browser-reported, not independently verified.
+            Daily scores and current streaks use UTC days. Scores are browser-reported, not independently verified.
             <a href="privacy.html">Privacy policy</a> · <a href="contact.html#leaderboard-report">Report a leaderboard entry</a></p>
           <p id="leaderboardStatus" role="status" class="px-5 pt-4 text-sm text-yellow-400"></p>
 
@@ -562,6 +562,8 @@
         dailyWins = 0;
         dailyAttempts = 0;
         todayBestStreak = 0;
+        winStreak = 0;
+        streakAttempts = 0;
         lastPlayedDate = today;
         return true;
       }
@@ -766,7 +768,7 @@
         const doc = await db.collection("users").doc(user.uid).get();
         if (revision !== authRevision || currentUser?.uid !== user.uid) return false;
         const name = doc.exists ? doc.data().displayName : null;
-        if (typeof name === "string" && /^[a-zA-Z0-9 ]{3,20}$/.test(name) && name.trim().length >= 3) {
+        if (typeof name === "string" && /^[a-zA-Z0-9 ]{3,20}$/.test(name) && name === name.trim()) {
           userDisplayName = name;
           return true;
         }

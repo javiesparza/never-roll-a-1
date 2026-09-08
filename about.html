@@ -89,7 +89,7 @@
                     The leaderboard uses Google Firebase Authentication and Cloud Firestore. While you are signed in and have a leaderboard display name, wins automatically submit scores; there is no separate opt-in for each win. Public score records include your display name, account-linked user ID, streak, attempts, and timestamp, plus a date for daily scores. Scores are ranked by streak length and then fewer attempts.
                 </p>
                 <p class="mt-3">
-                    Daily wins, daily attempts, and the daily leaderboard use midnight UTC as the day boundary. An active win streak carries across that boundary. A new day changes which daily scores are shown; it does not delete older cloud records. All-time scores track personal bests, but other players can still change your ranking. You can play signed out to avoid submitting scores. Read the <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a> before using sign-in.
+                    Daily wins, attempts, best streak, and the current win streak and streak-attempt count reset at midnight UTC, including while the game remains open. The daily leaderboard uses the same UTC day boundary. All-time totals and best streak persist. A new day changes which daily scores are shown; it does not delete older cloud records. Other players can still change your ranking. You can play signed out to avoid submitting scores. Read the <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a> before using sign-in.
                 </p>
             </section>
 

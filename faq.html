@@ -93,9 +93,9 @@
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Why did my stats reset?</h2>
                 <p>
-                    Daily wins, daily attempts, and the daily leaderboard use midnight UTC, not your local midnight. The game applies the new day when it next checks the date. Your active win streak carries across UTC midnight; a loss, not a date change, resets it. All-time stats are preserved across days when browser storage is available. A new daily view does not delete older cloud score records. If all local stats disappeared, browser storage may have been cleared, or you may be using a different browser, device, or private window. Local stats do not sync between devices, and signing in does not restore them from leaderboard records.
+                    Daily wins, attempts, best streak, current win streak, and streak-attempt count reset at midnight UTC, not your local midnight, including while the game remains open. The daily leaderboard uses that same day boundary. All-time wins, attempts, and best streak are preserved across days when browser storage is available. A new daily view does not delete older cloud score records. If all local stats disappeared, browser storage may have been cleared, or you may be using a different browser, device, or private window. Local stats do not sync between devices, and signing in does not restore them from leaderboard records.
                 </p>
-                <p class="mt-3">Attempts count completed rounds, including wins, rather than individual die rolls. A loss resets the win streak and starts a new streak-attempt sequence with that loss counted as its first attempt.</p>
+                <p class="mt-3">Attempts count completed rounds, including wins, rather than individual die rolls. A loss resets the win streak and starts a new streak-attempt sequence with that loss counted as its first attempt. If a round is in progress at UTC midnight, its die-roll progress remains intact and the completed outcome counts toward the UTC date when it finishes.</p>
             </section>
 
             <section>
