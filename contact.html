@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - Never Roll a 1</title>
     <meta name="description" content="Get in touch with the Never Roll a 1 team. Report bugs, suggest features, or ask questions about our dice probability game.">
+    <link rel="canonical" href="https://neverrollone.com/contact.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -13,44 +14,70 @@
     <meta property="og:description" content="Reach out to the Never Roll a 1 team with questions, feedback, or feature requests.">
     <meta property="og:image" content="https://neverrollone.com/preview.png">
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
     <div class="max-w-4xl mx-auto p-8">
-        <div class="mb-8">
-            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
-        </div>
+        <header class="mb-8">
+            <nav aria-label="Primary" class="flex flex-wrap gap-4 text-purple-300">
+                <a href="index.html" class="hover:underline">Play</a>
+                <a href="how-to-play.html" class="hover:underline">How to Play</a>
+                <a href="about.html" class="hover:underline">About</a>
+                <a href="faq.html" class="hover:underline">FAQ</a>
+                <a href="privacy.html" class="hover:underline">Privacy</a>
+                <a href="terms.html" class="hover:underline">Terms</a>
+                <a href="contact.html" aria-current="page" class="hover:underline">Contact</a>
+            </nav>
+        </header>
 
+        <main>
         <h1 class="text-4xl font-bold mb-8">Contact Us</h1>
 
         <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8">
             <p class="text-gray-300 mb-6">
-                Have questions, feedback, or found a bug? We'd love to hear from you! We typically respond within 48 hours on weekdays. Before reaching out, you may find your answer in our <a href="faq.html" class="text-purple-400 hover:underline">FAQ</a>.
+                Have questions, feedback, or found a bug? Contact the maintainer of <a href="https://github.com/javiesparza/never-roll-a-1" class="text-purple-400 hover:underline">javiesparza/never-roll-a-1</a>. This is an independent project; no response or resolution time is guaranteed. Before reaching out, you may find your answer in our <a href="faq.html" class="text-purple-400 hover:underline">FAQ</a>.
             </p>
 
             <div class="space-y-4">
                 <div class="bg-slate-700/50 rounded-lg p-6">
                     <h2 class="text-xl font-bold mb-2">Email</h2>
-                    <p class="text-purple-400">contact@neverrollone.com</p>
-                    <p class="text-gray-400 text-sm mt-2">For general inquiries, partnership opportunities, or press requests. We read every message and aim to reply within two business days.</p>
+                    <p><a href="mailto:contact@neverrollone.com" class="text-purple-400 hover:underline">contact@neverrollone.com</a></p>
+                    <p class="text-gray-400 text-sm mt-2">Use a descriptive subject for general questions or private requests. If email is unavailable, you can raise a non-sensitive issue in the <a href="https://github.com/javiesparza/never-roll-a-1/issues" class="text-purple-400 hover:underline">project's public issue tracker</a>. Do not post email addresses, account identifiers, or other private information there.</p>
                 </div>
 
                 <div class="bg-slate-700/50 rounded-lg p-6">
                     <h2 class="text-xl font-bold mb-2">Report a Bug</h2>
                     <p class="text-gray-300">
-                        Found something broken? Let us know and we'll fix it ASAP. When reporting a bug, please include your browser name and version, your device type (desktop, phone, tablet), and a description of what happened versus what you expected. Screenshots are always helpful. Bug reports are prioritized and typically addressed within 24 hours.
+                        Include your browser name and version, device type, the page address, steps to reproduce the problem, and what happened versus what you expected. Screenshots can help, but remove private information first. Reports are handled as maintainer availability permits.
                     </p>
                 </div>
 
                 <div class="bg-slate-700/50 rounded-lg p-6">
                     <h2 class="text-xl font-bold mb-2">Feature Requests</h2>
                     <p class="text-gray-300">
-                        Have ideas for new features or game modes? We're all ears! Some of the game's best features, including the win streak tracker and the daily leaderboard, started as player suggestions. When submitting a feature request, tell us what you would like to see and why it would make the game better. We cannot implement every idea, but we carefully evaluate each suggestion against our goal of keeping the game simple, fun, and educational.
+                        Tell us what you would like to see and how it would support a simple, educational probability game. Suggestions do not guarantee implementation.
                     </p>
                 </div>
+
+                <section id="leaderboard-report" class="bg-slate-700/50 rounded-lg p-6">
+                    <h2 class="text-xl font-bold mb-2">Report a Leaderboard Entry</h2>
+                    <p class="text-gray-300">
+                        <a href="mailto:contact@neverrollone.com?subject=Leaderboard%20report" class="text-purple-400 hover:underline">Email a leaderboard report</a> with the Daily or All-Time tab, the UTC date (especially for Daily entries), the exact display name, and the visible streak and attempts. Explain the suspected issue, such as an offensive name, impersonation, or a manipulated score. Include a screenshot or other relevant details without exposing private information.
+                    </p>
+                    <p class="text-gray-300 mt-3">
+                        The operator's procedure is manual: review the report and available records, then remove or correct an entry when a violation is established. Repeated abuse may lead to manual account restrictions or removal. Reports are not automatically verified, and no automated moderation or guaranteed review time is provided. A high score alone is not proof of cheating.
+                    </p>
+                </section>
+
+                <section id="data-deletion" class="bg-slate-700/50 rounded-lg p-6">
+                    <h2 class="text-xl font-bold mb-2">Request Account or Score Deletion</h2>
+                    <p class="text-gray-300">
+                        <a href="mailto:contact@neverrollone.com?subject=Data%20deletion%20request" class="text-purple-400 hover:underline">Email a data deletion request</a> stating whether you want the Firebase Authentication account, Firestore user profile, daily scores, all-time scores, or all of these removed. You can also ask about account-linked moderation records and any applicable retention duties. Include your leaderboard display name and relevant UTC dates; use the account's email address if possible. The maintainer may need to verify control of the account before removing records. Never send passwords, sign-in codes, or tokens.
+                    </p>
+                    <p class="text-gray-300 mt-3">
+                        Clearing browser storage only deletes local stats and session data; signing out ends your session. Neither action deletes remote account or leaderboard records. See the <a href="privacy.html#your-choices" class="text-purple-400 hover:underline">privacy choices</a> for details.
+                    </p>
+                </section>
 
                 <div class="bg-slate-700/50 rounded-lg p-6">
                     <h2 class="text-xl font-bold mb-2">Legal & Privacy</h2>
@@ -67,8 +94,9 @@
             </a>
         </div>
 
-        <!-- Footer Navigation -->
-        <div class="mt-12 text-center text-sm text-gray-500 space-y-2">
+        </main>
+        <footer class="mt-12 text-center text-sm text-gray-300 space-y-2">
+            <nav aria-label="Footer">
             <div class="space-x-4">
                 <a href="index.html" class="hover:text-purple-400">Play</a>
                 <span>·</span>
@@ -89,7 +117,8 @@
                 <span>·</span>
                 <a href="contact.html" class="hover:text-purple-400">Contact</a>
             </div>
-        </div>
+            </nav>
+        </footer>
     </div>
 </body>
 </html>

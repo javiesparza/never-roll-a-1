@@ -6,7 +6,7 @@
     <title>Never Roll a 1 - Beat the Odds!</title>
     <meta
       name="description"
-      content="Can you roll a die 10 times without hitting a 1? Test your luck in this addictive probability game!"
+      content="Play Never Roll a 1, a free dice probability game with no wagers or prizes. Explore theoretical odds and your observed results."
     />
 
     <!-- Open Graph / Facebook -->
@@ -15,7 +15,7 @@
     <meta property="og:title" content="Never Roll a 1 - Beat the Odds! 🎲" />
     <meta
       property="og:description"
-      content="Can you roll a die 10 times without hitting a 1? Only 16% succeed. Test your luck now!"
+      content="Can you roll a die 10 times without hitting a 1? A free probability game with no wagers or prizes."
     />
     <meta property="og:image" content="https://neverrollone.com/preview.png" />
 
@@ -28,7 +28,7 @@
     />
     <meta
       property="twitter:description"
-      content="Can you roll a die 10 times without hitting a 1? Only 16% succeed. Test your luck now!"
+      content="Can you roll a die 10 times without hitting a 1? A free probability game with no wagers or prizes."
     />
     <meta
       property="twitter:image"
@@ -43,15 +43,9 @@
     />
     <meta name="apple-mobile-web-app-title" content="Never Roll a 1" />
 
-    <!-- Google AdSense -->
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615"
-      crossorigin="anonymous"
-    ></script>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="canonical" href="https://neverrollone.com/" />
+    <meta name="google-adsense-account" content="ca-pub-6398871668173615" />
+    <link rel="stylesheet" href="/assets/styles.css" />
 
     <!-- Firebase SDK (compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -147,6 +141,27 @@
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
+      a { text-decoration: underline; text-underline-offset: 3px; }
+      button:focus-visible, a:focus-visible, input:focus-visible {
+        outline: 3px solid #facc15;
+        outline-offset: 4px;
+      }
+      button { touch-action: manipulation; }
+      #actionButtonContainer > button { max-width: 100%; white-space: normal; }
+      [role="dialog"] { outline: none; }
+      @media (max-width: 480px) {
+        #statsGrid { gap: 0.5rem; }
+        #statsGrid > button { padding: 0.5rem; min-width: 0; overflow-wrap: anywhere; }
+        #gamePanel { padding: 1rem; }
+        #actionButtonContainer > button { padding: 0.75rem 1rem; font-size: 1rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
     </style>
   </head>
   <body
@@ -163,28 +178,24 @@
       ></div>
     </div>
 
-    <!-- Top Banner Ad -->
-    <div id="topBannerAd" class="max-w-4xl mx-auto relative z-10 px-4 mb-4">
-      <div class="h-24 flex items-center justify-center overflow-hidden">
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615"
-          crossorigin="anonymous"
-        ></script>
-        <!-- Top Banner -->
-        <ins
-          class="adsbygoogle"
-          style="display: inline-block; width: 728px; height: 90px"
-          data-ad-client="ca-pub-6398871668173615"
-          data-ad-slot="1986484521"
-        ></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </div>
-
-    <div id="mainContent" class="max-w-4xl mx-auto relative z-10 pb-32 px-4">
+    <main id="mainContent" class="max-w-4xl mx-auto relative z-10 py-8 px-4">
+      <header class="mb-6">
+        <h1 class="text-4xl font-black mb-3">Never Roll a 1</h1>
+        <p class="mb-3">A free dice probability game. No wagers, purchases, cash prizes, or rewards.</p>
+        <p class="mb-3">Roll a virtual six-sided die. A 1 ends your round; ten rolls of 2–6 win it.
+          Each roll is independent. Continue after a win to build a consecutive win streak; a loss resets that streak.
+          One completed round counts as one attempt.</p>
+        <nav aria-label="Learn about the game" class="flex flex-wrap gap-4">
+          <a href="how-to-play.html">How to Play</a>
+          <a href="probability-guide.html">Probability Guide</a>
+          <a href="dice-facts.html">Dice Facts</a>
+          <a href="faq.html">FAQ</a>
+        </nav>
+      </header>
+      <noscript><p class="mb-4">JavaScript is required to play and view the leaderboard. You can still read the rules and educational pages linked above.</p></noscript>
+      <p id="storageStatus" role="status" class="text-sm text-gray-300 mb-3">Stats are saved in this browser when storage is available.</p>
+      <p id="appStatus" role="status" class="text-sm text-yellow-400 mb-3"></p>
+      <p class="text-sm text-gray-300 mb-3">Daily stats and leaderboard dates use UTC and reset at 00:00 UTC. All-time stats stay in this browser.</p>
       <!-- Leaderboard Button -->
       <div class="flex justify-end mb-4">
         <button
@@ -196,87 +207,89 @@
       </div>
 
       <!-- Header Stats -->
-      <div class="grid grid-cols-3 gap-4 mb-8">
-        <div
+      <p id="statsHelp" class="text-sm text-gray-300 mb-3">Select a stats button to cycle its views. Streak attempts include completed rounds since the last broken win streak, including losses before its first win.</p>
+      <div id="statsGrid" class="grid grid-cols-3 gap-4 mb-8">
+        <button type="button" aria-labelledby="winsLabel winsDisplay" aria-describedby="statsHelp"
           id="winsBlock"
           class="bg-slate-800/50 backdrop-blur-sm border border-pink-500/30 rounded-lg p-4 cursor-pointer hover:bg-slate-800/70 transition-colors flex flex-col"
           onclick="cycleWinsDisplay()"
         >
-          <div class="flex items-center justify-between text-pink-400 mb-1">
+          <span class="flex items-center justify-between text-pink-400 mb-1">
             <span class="text-xs font-bold uppercase" id="winsLabel"
               >Today's Wins</span
             >
-            <div class="flex gap-1">
-              <div
+            <span class="flex gap-1" aria-hidden="true">
+              <span
                 id="winsDot1"
                 class="w-1.5 h-1.5 rounded-full bg-pink-400"
-              ></div>
-              <div
+              ></span>
+              <span
                 id="winsDot2"
                 class="w-1.5 h-1.5 rounded-full bg-pink-400/30"
-              ></div>
-            </div>
-          </div>
-          <div class="text-3xl font-bold mt-auto" id="winsDisplay">0</div>
-        </div>
+              ></span>
+            </span>
+          </span>
+          <span class="text-3xl font-bold mt-auto" id="winsDisplay">0</span>
+        </button>
 
-        <div
+        <button type="button" aria-labelledby="streakLabel streakDisplay" aria-describedby="statsHelp"
           id="streakBlock"
           class="bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 cursor-pointer hover:bg-slate-800/70 transition-colors flex flex-col"
           onclick="cycleStreakDisplay()"
         >
-          <div class="flex items-center justify-between text-purple-400 mb-1">
+          <span class="flex items-center justify-between text-purple-400 mb-1">
             <span class="text-xs font-bold uppercase" id="streakLabel"
               >Win Streak</span
             >
-            <div class="flex gap-1">
-              <div
+            <span class="flex gap-1" aria-hidden="true">
+              <span
                 id="streakDot1"
                 class="w-1.5 h-1.5 rounded-full bg-purple-400"
-              ></div>
-              <div
+              ></span>
+              <span
                 id="streakDot2"
                 class="w-1.5 h-1.5 rounded-full bg-purple-400/30"
-              ></div>
-              <div
+              ></span>
+              <span
                 id="streakDot3"
                 class="w-1.5 h-1.5 rounded-full bg-purple-400/30"
-              ></div>
-            </div>
-          </div>
-          <div class="text-3xl font-bold mt-auto" id="streakDisplay">0</div>
-        </div>
+              ></span>
+            </span>
+          </span>
+          <span class="text-3xl font-bold mt-auto" id="streakDisplay">0</span>
+        </button>
 
-        <div
+        <button type="button" aria-labelledby="attemptsLabel attemptsDisplay" aria-describedby="statsHelp"
           id="attemptsBlock"
           class="bg-slate-800/50 backdrop-blur-sm border border-blue-500/30 rounded-lg p-4 cursor-pointer hover:bg-slate-800/70 transition-colors flex flex-col"
           onclick="cycleAttemptsDisplay()"
         >
-          <div class="flex items-center justify-between text-blue-400 mb-1">
+          <span class="flex items-center justify-between text-blue-400 mb-1">
             <span class="text-xs font-bold uppercase" id="attemptsLabel"
               >Today's Attempts</span
             >
-            <div class="flex gap-1">
-              <div
+            <span class="flex gap-1" aria-hidden="true">
+              <span
                 id="attemptsDot1"
                 class="w-1.5 h-1.5 rounded-full bg-blue-400"
-              ></div>
-              <div
+              ></span>
+              <span
                 id="attemptsDot2"
                 class="w-1.5 h-1.5 rounded-full bg-blue-400/30"
-              ></div>
-              <div
+              ></span>
+              <span
                 id="attemptsDot3"
                 class="w-1.5 h-1.5 rounded-full bg-blue-400/30"
-              ></div>
-            </div>
-          </div>
-          <div class="text-3xl font-bold mt-auto" id="attemptsDisplay">0</div>
-        </div>
+              ></span>
+            </span>
+          </span>
+          <span class="text-3xl font-bold mt-auto" id="attemptsDisplay">0</span>
+        </button>
       </div>
 
       <!-- Main Game Area -->
       <div
+        id="gamePanel"
         class="bg-slate-800/70 backdrop-blur-xl border-4 border-purple-500/50 rounded-2xl p-8 mb-6 shadow-2xl"
       >
         <!-- Progress Bar -->
@@ -305,6 +318,8 @@
           <div id="diceContainer">
             <div
               id="dice"
+              role="img"
+              aria-label="Die not rolled yet"
               class="w-40 h-40 bg-slate-700 rounded-3xl shadow-2xl flex items-center justify-center border-4 border-dashed border-purple-500/50"
             >
               <span class="text-6xl">🎲</span>
@@ -333,16 +348,19 @@
         </div>
 
         <!-- Game Status -->
-        <div id="gameStatus" class="text-center mt-6 hidden"></div>
+        <div id="gameStatus" role="status" class="text-center mt-6 hidden"></div>
 
         <!-- Live Probability -->
-        <div id="liveProb" class="mt-6 text-center hidden">
+        <div id="liveProb" class="mt-6 text-center" aria-live="polite">
           <div class="text-sm text-gray-400">
-            Current Success Rate:
+            Chance to win from here (remaining rolls):
             <span class="text-yellow-400 font-bold" id="currentProb"
-              >100.0%</span
+              >16.15%</span
             >
           </div>
+          <p id="roundExplanation" class="text-sm text-gray-300 text-center mt-3">
+            Ten safe rolls are needed: (5/6)^10 ≈ 16.15%. Every next roll still has a 1/6 chance of ending the round.
+          </p>
         </div>
       </div>
 
@@ -350,12 +368,12 @@
       <div
         class="bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-lg p-6"
       >
-        <h3
+        <h2
           class="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2"
         >
           <span class="text-xl">⚡</span>
           THE ODDS
-        </h3>
+        </h2>
         <div class="grid grid-cols-2 gap-4 text-sm">
           <div>
             <div class="text-gray-400">Chance to Win (10 rolls):</div>
@@ -366,53 +384,23 @@
             <div class="text-xl font-bold text-red-400">83.85%</div>
           </div>
           <div>
-            <div class="text-gray-400">Make it to Roll 8:</div>
+            <div class="text-gray-400">Survive 8 rolls:</div>
             <div class="text-xl font-bold text-yellow-400">23.3%</div>
           </div>
           <div>
-            <div class="text-gray-400">Your Success Rate:</div>
+            <div class="text-gray-400">Observed win rate (this browser):</div>
             <div class="text-xl font-bold text-purple-400" id="userSuccessRate">
-              0.0%
+              No completed rounds yet
             </div>
           </div>
         </div>
+        <p id="observedExplanation" class="text-sm text-gray-300 mt-4">The theoretical win rate is (5/6)^10 ≈ 16.15%. Your observed rate is wins divided by completed rounds, not a prediction of your next result.</p>
       </div>
-    </div>
-
-    <!-- Bottom Sticky Banner Ad -->
-    <div
-      id="bottomBannerAd"
-      class="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-700/50"
-    >
-      <div
-        class="max-w-4xl mx-auto flex items-center justify-center overflow-hidden py-2 px-4"
-      >
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615"
-          crossorigin="anonymous"
-        ></script>
-        <!-- Bottom Sticky -->
-        <ins
-          class="adsbygoogle"
-          style="
-            display: inline-block;
-            width: 100%;
-            max-width: 728px;
-            height: 90px;
-          "
-          data-ad-client="ca-pub-6398871668173615"
-          data-ad-slot="4421076176"
-        ></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-    </div>
+    </main>
 
     <!-- Footer Links -->
     <div
-      class="max-w-4xl mx-auto text-center py-4 text-sm text-gray-500 relative z-10 mb-24 space-y-2"
+      class="max-w-4xl mx-auto text-center py-4 text-sm text-gray-300 relative z-10 space-y-2"
     >
       <div class="space-x-4">
         <a href="index.html" class="hover:text-purple-400">Play</a>
@@ -437,7 +425,7 @@
     </div>
 
     <!-- Leaderboard Modal -->
-    <div id="leaderboardModal" class="fixed inset-0 z-[100] hidden">
+    <div id="leaderboardModal" role="dialog" aria-modal="true" aria-labelledby="leaderboardTitle" tabindex="-1" class="fixed inset-0 z-[100] hidden">
       <!-- Backdrop -->
       <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeLeaderboard()"></div>
       <!-- Modal Container -->
@@ -445,42 +433,52 @@
         <div class="modal-enter bg-slate-900 border border-purple-500/40 rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto pointer-events-auto shadow-2xl">
           <!-- Header -->
           <div class="flex items-center justify-between p-5 border-b border-slate-700/50 sticky top-0 bg-slate-900 z-10 rounded-t-2xl">
-            <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">🏆 Leaderboard</h2>
-            <button onclick="closeLeaderboard()" class="text-gray-400 hover:text-white text-2xl leading-none transition-colors">&times;</button>
+            <h2 id="leaderboardTitle" class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">🏆 Leaderboard</h2>
+            <button aria-label="Close leaderboard" onclick="closeLeaderboard()" class="text-gray-400 hover:text-white text-2xl leading-none transition-colors">&times;</button>
           </div>
 
           <!-- Auth Section -->
           <div id="leaderboardAuthSection" class="px-5 pt-4"></div>
+          <p class="px-5 pt-4 text-sm text-gray-300">Names and scores are public. After signing in and choosing a name, winning scores are submitted automatically.
+            Daily scores use UTC; a streak can span days. Scores are browser-reported, not independently verified.
+            <a href="privacy.html">Privacy policy</a> · <a href="contact.html#leaderboard-report">Report a leaderboard entry</a></p>
+          <p id="leaderboardStatus" role="status" class="px-5 pt-4 text-sm text-yellow-400"></p>
 
           <!-- Tab Bar -->
           <div class="flex gap-2 px-5 py-3">
-            <button id="tabDaily" onclick="switchLeaderboardTab('daily')" class="tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200">Daily</button>
-            <button id="tabAllTime" onclick="switchLeaderboardTab('alltime')" class="tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200">All-Time</button>
+            <button id="tabDaily" aria-pressed="true" onclick="switchLeaderboardTab('daily')" class="tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200">Daily (UTC)</button>
+            <button id="tabAllTime" aria-pressed="false" onclick="switchLeaderboardTab('alltime')" class="tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200">All-Time</button>
           </div>
 
           <!-- Leaderboard Content -->
-          <div id="leaderboardContent" class="px-5 pb-5"></div>
+          <div id="leaderboardContent" aria-live="polite" class="px-5 pb-5"></div>
         </div>
       </div>
     </div>
 
     <!-- Display Name Modal -->
-    <div id="displayNameModal" class="fixed inset-0 z-[110] hidden">
+    <div id="displayNameModal" role="dialog" aria-modal="true" aria-labelledby="displayNameTitle" tabindex="-1" class="fixed inset-0 z-[110] hidden">
       <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
       <div class="relative flex items-center justify-center min-h-screen p-4 pointer-events-none">
         <div class="modal-enter bg-slate-900 border border-purple-500/40 rounded-2xl w-full max-w-sm pointer-events-auto shadow-2xl p-6">
-          <h3 class="text-lg font-bold text-white mb-4">Choose a Display Name</h3>
+          <h2 id="displayNameTitle" class="text-lg font-bold text-white mb-4">Choose a Display Name</h2>
+          <p class="text-sm text-gray-300 mb-3">This name and your winning scores will be public. Future wins submit automatically while signed in. <a href="privacy.html">Privacy policy</a></p>
+          <label for="displayNameInput">Public name (3–20 letters, numbers, or spaces)</label>
           <input
             id="displayNameInput"
             type="text"
             maxlength="20"
+            minlength="3"
+            aria-describedby="displayNameError"
+            autocomplete="nickname"
             placeholder="Enter your name..."
             class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors mb-2"
           />
-          <div id="displayNameError" class="text-red-400 text-sm mb-4 hidden"></div>
-          <button onclick="saveDisplayName()" class="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-lg transition-all duration-200">
+          <div id="displayNameError" role="alert" class="text-red-400 text-sm mb-4 hidden"></div>
+          <button id="saveNameButton" onclick="saveDisplayName()" class="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-lg transition-all duration-200">
             Save Name
           </button>
+          <button onclick="cancelDisplayName()" class="w-full px-4 py-3 mt-2 border border-slate-600 rounded-lg">Cancel and sign out</button>
         </div>
       </div>
     </div>
@@ -496,30 +494,8 @@
         appId: "1:684267904064:web:00849185d9dc2b7dca93a5"
       };
 
-      /*
-        Firestore Security Rules:
-        rules_version = '2';
-        service cloud.firestore {
-          match /databases/{database}/documents {
-            match /users/{userId} {
-              allow read: if request.auth != null;
-              allow write: if request.auth != null && request.auth.uid == userId;
-            }
-            match /dailyScores/{docId} {
-              allow read: if true;
-              allow write: if request.auth != null && resource == null || resource.data.userId == request.auth.uid;
-            }
-            match /allTimeScores/{userId} {
-              allow read: if true;
-              allow write: if request.auth != null && request.auth.uid == userId;
-            }
-          }
-        }
-
-        Required Composite Indexes:
-        - Collection: dailyScores — Fields: date ASC, streak DESC, attempts ASC
-        - Collection: allTimeScores — Fields: streak DESC, attempts ASC
-      */
+      // Deploy the repository's firestore.rules and indexes before enabling writes.
+      // This client cannot verify which production rules have been deployed.
 
       let firebaseReady = false;
       let auth = null;
@@ -541,9 +517,6 @@
         firebaseReady = false;
       }
 
-      // Ad Toggle - Set to true to show ads, false to hide
-      const SHOW_ADS = true;
-
       // Game State
       let currentRoll = null;
       let rollCount = 0;
@@ -559,6 +532,39 @@
       let todayBestStreak = 0; // Best win streak today
       let allTimeBestStreak = 0; // Best win streak all-time
       let lastPlayedDate = null;
+      let storageAvailable = true;
+      let roundId = 0;
+      let winningScore = null;
+      let leaderboardRequest = 0;
+      let authRevision = 0;
+      let signingIn = false;
+      let nameRequest = null;
+      let scoreQueue = Promise.resolve();
+
+      function validCount(value) {
+        return Number.isSafeInteger(value) && value >= 0;
+      }
+
+      function setStatus(message) {
+        document.getElementById("appStatus").textContent = message;
+        document.getElementById("leaderboardStatus").textContent = message;
+      }
+
+      function storageFallback() {
+        storageAvailable = false;
+        document.getElementById("storageStatus").textContent =
+          "Browser storage is blocked or invalid. Stats now stay in memory only and will be lost when this page closes.";
+      }
+
+      function ensureUTCDay() {
+        const today = getTodayString();
+        if (lastPlayedDate === today) return false;
+        dailyWins = 0;
+        dailyAttempts = 0;
+        todayBestStreak = 0;
+        lastPlayedDate = today;
+        return true;
+      }
 
       // UI cycle states
       let winsDisplayMode = "today"; // 'today' or 'alltime'
@@ -570,36 +576,37 @@
 
       // Load saved data from localStorage
       function loadGameData() {
-        const saved = localStorage.getItem("neverRollOneData");
-        if (saved) {
-          const data = JSON.parse(saved);
-          bestStreak = data.bestStreak || 0;
-          totalAttempts = data.totalAttempts || 0;
-          dailyAttempts = data.dailyAttempts || 0;
-          streakAttempts = data.streakAttempts || 0;
-          dailyWins = data.dailyWins || 0;
-          winStreak = data.winStreak || 0;
-          allTimeWins = data.allTimeWins || 0;
-          todayBestStreak = data.todayBestStreak || 0;
-          allTimeBestStreak = data.allTimeBestStreak || 0;
-          lastPlayedDate = data.lastPlayedDate || null;
-
-          // Check if it's a new day - reset daily stats
-          const today = new Date().toDateString();
-          if (lastPlayedDate !== today) {
-            dailyWins = 0;
-            dailyAttempts = 0;
-            winStreak = 0;
-            streakAttempts = 0;
-            todayBestStreak = 0;
-            lastPlayedDate = today;
-            saveGameData();
+        try {
+          const saved = localStorage.getItem("neverRollOneData");
+          if (saved) {
+            const data = JSON.parse(saved);
+            const keys = ["bestStreak", "totalAttempts", "dailyAttempts", "streakAttempts",
+              "dailyWins", "winStreak", "allTimeWins", "todayBestStreak", "allTimeBestStreak"];
+            if (!data || typeof data !== "object" || Array.isArray(data) ||
+                keys.some(key => data[key] !== undefined && !validCount(data[key]))) {
+              throw new Error("Invalid saved stats");
+            }
+            totalAttempts = data.totalAttempts ?? 0;
+            allTimeWins = Math.min(data.allTimeWins ?? 0, totalAttempts);
+            bestStreak = Math.min(data.bestStreak ?? 0, 10);
+            dailyAttempts = Math.min(data.dailyAttempts ?? 0, totalAttempts);
+            dailyWins = Math.min(data.dailyWins ?? 0, dailyAttempts, allTimeWins);
+            winStreak = Math.min(data.winStreak ?? 0, allTimeWins);
+            // Older versions omitted wins from streak attempts.
+            streakAttempts = Math.max(winStreak, Math.min(data.streakAttempts ?? 0, totalAttempts));
+            allTimeBestStreak = Math.max(winStreak, Math.min(data.allTimeBestStreak ?? 0, allTimeWins));
+            todayBestStreak = Math.min(data.todayBestStreak ?? 0, allTimeBestStreak);
+            lastPlayedDate = typeof data.lastPlayedDate === "string" ? data.lastPlayedDate : null;
           }
+        } catch (e) {
+          storageFallback();
         }
+        ensureUTCDay();
       }
 
       // Save data to localStorage
       function saveGameData() {
+        ensureUTCDay();
         const data = {
           bestStreak,
           totalAttempts,
@@ -610,9 +617,14 @@
           allTimeWins,
           todayBestStreak,
           allTimeBestStreak,
-          lastPlayedDate: new Date().toDateString(),
+          lastPlayedDate,
         };
-        localStorage.setItem("neverRollOneData", JSON.stringify(data));
+        if (!storageAvailable) return;
+        try {
+          localStorage.setItem("neverRollOneData", JSON.stringify(data));
+        } catch (e) {
+          storageFallback();
+        }
       }
 
       // DOM Elements
@@ -645,55 +657,148 @@
       }
 
       // ===== Authentication Functions =====
+      const modalStack = [];
+      const focusableSelector = 'button:not([disabled]), a[href], input:not([disabled]), [tabindex="0"]';
+
+      function syncModalBackground() {
+        const top = modalStack.at(-1)?.element;
+        for (const child of document.body.children) {
+          if (child.tagName === "SCRIPT") continue;
+          child.inert = Boolean(top && child !== top);
+        }
+        document.body.style.overflow = top ? "hidden" : "";
+      }
+
+      function openModal(id) {
+        const element = document.getElementById(id);
+        if (modalStack.some(item => item.element === element)) return;
+        modalStack.push({ element, previous: document.activeElement });
+        element.classList.remove("hidden");
+        syncModalBackground();
+        (element.querySelector(focusableSelector) || element).focus();
+      }
+
+      function closeModal(id) {
+        const top = modalStack.at(-1);
+        if (!top || top.element.id !== id) return;
+        modalStack.pop();
+        top.element.classList.add("hidden");
+        syncModalBackground();
+        const parent = modalStack.at(-1)?.element;
+        const target = top.previous?.isConnected && (!parent || parent.contains(top.previous))
+          ? top.previous : parent?.querySelector(focusableSelector) || parent || actionButton;
+        target.focus();
+      }
+
+      document.addEventListener("keydown", event => {
+        const top = modalStack.at(-1)?.element;
+        if (!top) return;
+        if (event.key === "Escape") {
+          event.preventDefault();
+          if (top.id === "displayNameModal") cancelDisplayName();
+          else closeLeaderboard();
+        } else if (event.key === "Tab") {
+          const items = [...top.querySelectorAll(focusableSelector)].filter(item => !item.closest(".hidden"));
+          const first = items[0] || top;
+          const last = items.at(-1) || top;
+          if (!top.contains(document.activeElement) || document.activeElement === top ||
+              (event.shiftKey && document.activeElement === first) ||
+              (!event.shiftKey && document.activeElement === last)) {
+            event.preventDefault();
+            (event.shiftKey ? last : first).focus();
+          }
+        }
+      });
 
       async function signInWithGoogle() {
-        if (!firebaseReady) return null;
+        if (!firebaseReady || signingIn) return null;
+        signingIn = true;
+        setStatus("Opening Google sign-in…");
         try {
           const result = await auth.signInWithPopup(googleProvider);
-          await checkAndSetDisplayName(result.user);
+          if (currentUser?.uid !== result.user.uid) authRevision++;
+          currentUser = result.user;
+          if (!await checkAndSetDisplayName(result.user)) return null;
+          setStatus("Signed in. Winning scores will be public and submitted automatically.");
           return result.user;
         } catch (e) {
-          if (e.code !== 'auth/popup-closed-by-user') {
-            console.error("Sign-in error:", e);
-          }
+          await clearFailedSignIn();
+          setStatus(e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request"
+            ? "Sign-in cancelled. You can keep playing without signing in."
+            : "Sign-in failed. Check popup permissions or your connection and try again.");
           return null;
+        } finally {
+          signingIn = false;
+          updateLeaderboardAuthUI();
         }
+      }
+
+      async function clearFailedSignIn() {
+        authRevision++;
+        currentUser = null;
+        userDisplayName = null;
+        resolveNameRequest(false);
+        if (auth) {
+          try { await auth.signOut(); }
+          catch (e) { setStatus("Could not confirm sign-out. Automatic score submission is paused; reload to check your session."); }
+        }
+        updateLeaderboardAuthUI();
       }
 
       async function signOutUser() {
         if (!firebaseReady) return;
         try {
           await auth.signOut();
+          authRevision++;
           currentUser = null;
           userDisplayName = null;
+          resolveNameRequest(false);
           updateLeaderboardAuthUI();
+          setStatus("Signed out. Automatic submission is off.");
         } catch (e) {
-          console.error("Sign-out error:", e);
+          setStatus("Sign-out failed. Please check your connection and try again.");
         }
       }
 
       async function checkAndSetDisplayName(user) {
-        if (!firebaseReady || !user) return;
-        try {
-          const doc = await db.collection("users").doc(user.uid).get();
-          if (doc.exists && doc.data().displayName) {
-            userDisplayName = doc.data().displayName;
-          } else {
-            openDisplayNameModal();
-          }
-        } catch (e) {
-          console.error("Error checking display name:", e);
+        if (!firebaseReady || !user) return false;
+        const revision = authRevision;
+        const doc = await db.collection("users").doc(user.uid).get();
+        if (revision !== authRevision || currentUser?.uid !== user.uid) return false;
+        const name = doc.exists ? doc.data().displayName : null;
+        if (typeof name === "string" && /^[a-zA-Z0-9 ]{3,20}$/.test(name) && name.trim().length >= 3) {
+          userDisplayName = name;
+          return true;
         }
+        return openDisplayNameModal();
       }
 
       function openDisplayNameModal() {
-        document.getElementById("displayNameModal").classList.remove("hidden");
+        if (nameRequest) return nameRequest.promise;
+        if (!currentUser) return Promise.resolve(false);
+        let resolve;
+        const promise = new Promise(done => { resolve = done; });
+        nameRequest = { promise, resolve, uid: currentUser.uid, revision: authRevision };
         document.getElementById("displayNameInput").value = "";
         document.getElementById("displayNameError").classList.add("hidden");
+        document.getElementById("saveNameButton").disabled = false;
+        openModal("displayNameModal");
         document.getElementById("displayNameInput").focus();
+        return promise;
       }
 
-      let pendingSaveToLeaderboard = false;
+      function resolveNameRequest(saved) {
+        if (!nameRequest) return;
+        const request = nameRequest;
+        nameRequest = null;
+        closeModal("displayNameModal");
+        request.resolve(saved);
+      }
+
+      async function cancelDisplayName() {
+        await clearFailedSignIn();
+        setStatus("Name setup cancelled. No score was submitted.");
+      }
 
       async function saveDisplayName() {
         const input = document.getElementById("displayNameInput");
@@ -712,77 +817,74 @@
           return;
         }
 
-        if (!currentUser) return;
+        if (!currentUser || !nameRequest || document.getElementById("saveNameButton").disabled) return;
+        const request = nameRequest;
+        document.getElementById("saveNameButton").disabled = true;
 
         try {
-          await db.collection("users").doc(currentUser.uid).set({
+          await db.collection("users").doc(request.uid).set({
             displayName: name,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           }, { merge: true });
+          if (nameRequest !== request || authRevision !== request.revision || currentUser?.uid !== request.uid) return;
           userDisplayName = name;
-          document.getElementById("displayNameModal").classList.add("hidden");
+          resolveNameRequest(true);
           updateLeaderboardAuthUI();
-
-          // Complete the pending save that triggered the display name modal
-          if (pendingSaveToLeaderboard) {
-            pendingSaveToLeaderboard = false;
-            saveScoreToLeaderboard();
-          }
         } catch (e) {
+          if (nameRequest !== request) return;
           errorEl.textContent = "Failed to save. Please try again.";
           errorEl.classList.remove("hidden");
-          console.error("Save display name error:", e);
+        } finally {
+          if (nameRequest === request) document.getElementById("saveNameButton").disabled = false;
         }
       }
 
       // Auth state listener
       if (firebaseReady) {
         auth.onAuthStateChanged(async (user) => {
-          currentUser = user;
-          if (user) {
-            await checkAndSetDisplayName(user);
-          } else {
+          const changed = currentUser?.uid !== user?.uid;
+          if (changed) {
+            authRevision++;
+            leaderboardRequest++;
             userDisplayName = null;
+          }
+          currentUser = user;
+          if (!user) resolveNameRequest(false);
+          if (user && !signingIn && (changed || !userDisplayName)) {
+            try { await checkAndSetDisplayName(user); }
+            catch (e) {
+              await clearFailedSignIn();
+              setStatus("Could not load your display name. Sign in again to retry; no score was submitted.");
+            }
           }
           updateLeaderboardAuthUI();
           updateSaveToLeaderboardButton();
+          if (!document.getElementById("leaderboardModal").classList.contains("hidden")) {
+            loadLeaderboardData(currentLeaderboardTab);
+          }
         });
       }
 
       // ===== Firestore Score Functions =====
 
       function getTodayString() {
-        const now = new Date();
-        const y = now.getFullYear();
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const d = String(now.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
+        return new Date().toISOString().slice(0, 10);
       }
 
       function isBetterScore(newScore, oldScore) {
-        if (!oldScore) return true;
+        if (!oldScore || !validCount(oldScore.streak) || !validCount(oldScore.attempts)) return true;
         if (newScore.streak > oldScore.streak) return true;
         if (newScore.streak === oldScore.streak && newScore.attempts < oldScore.attempts) return true;
         return false;
       }
 
       async function saveScoreToLeaderboard() {
+        const score = winningScore && { ...winningScore };
+        if (!score) return;
         if (!firebaseReady) {
-          alert("Firebase is not configured. Leaderboard is unavailable.");
+          setStatus("Leaderboard is unavailable. Your local game still works.");
           return;
         }
-
-        if (!currentUser) {
-          const user = await signInWithGoogle();
-          if (!user) return;
-        }
-
-        if (!userDisplayName) {
-          pendingSaveToLeaderboard = true;
-          openDisplayNameModal();
-          return;
-        }
-
         const btn = document.getElementById("saveToLeaderboardBtn");
         if (btn) {
           btn.disabled = true;
@@ -790,46 +892,26 @@
         }
 
         try {
-          const today = getTodayString();
-          const newScore = {
-            userId: currentUser.uid,
-            displayName: userDisplayName,
-            streak: winStreak,
-            attempts: streakAttempts,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          };
-
-          // Save daily score
-          const dailyDocId = `${currentUser.uid}_${today}`;
-          const dailyRef = db.collection("dailyScores").doc(dailyDocId);
-          const dailyDoc = await dailyRef.get();
-
-          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, dailyDoc.exists ? dailyDoc.data() : null)) {
-            await dailyRef.set({ ...newScore, date: today });
+          if (!currentUser) {
+            if (!await signInWithGoogle()) return;
+          } else if (!userDisplayName) {
+            if (!await checkAndSetDisplayName(currentUser)) return;
           }
-
-          // Save all-time score
-          const allTimeRef = db.collection("allTimeScores").doc(currentUser.uid);
-          const allTimeDoc = await allTimeRef.get();
-
-          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, allTimeDoc.exists ? allTimeDoc.data() : null)) {
-            await allTimeRef.set(newScore);
-          }
-
-          showSaveSuccess();
+          await submitScore(score);
+          setStatus("Leaderboard updated.");
+          if (score.roundId === roundId) showSaveSuccess();
         } catch (e) {
-          console.error("Save score error:", e);
-          if (btn) {
+          setStatus("Failed to save score. Check your connection and try again.");
+        } finally {
+          if (btn?.isConnected && btn.textContent !== "✅ Saved!") {
             btn.disabled = false;
             btn.textContent = "🏆 Save to Leaderboard";
           }
-          alert("Failed to save score. Please try again.");
         }
       }
 
       async function fetchDailyLeaderboard() {
-        if (!firebaseReady) return [];
-        try {
+        if (!firebaseReady) throw new Error("Leaderboard unavailable");
           const today = getTodayString();
           const snapshot = await db.collection("dailyScores")
             .where("date", "==", today)
@@ -838,30 +920,20 @@
             .limit(10)
             .get();
           return snapshot.docs.map(doc => doc.data());
-        } catch (e) {
-          console.error("Fetch daily leaderboard error:", e);
-          return [];
-        }
       }
 
       async function fetchAllTimeLeaderboard() {
-        if (!firebaseReady) return [];
-        try {
+        if (!firebaseReady) throw new Error("Leaderboard unavailable");
           const snapshot = await db.collection("allTimeScores")
             .orderBy("streak", "desc")
             .orderBy("attempts", "asc")
             .limit(25)
             .get();
           return snapshot.docs.map(doc => doc.data());
-        } catch (e) {
-          console.error("Fetch all-time leaderboard error:", e);
-          return [];
-        }
       }
 
       async function fetchUserBest(tab) {
         if (!firebaseReady || !currentUser) return null;
-        try {
           if (tab === "daily") {
             const today = getTodayString();
             const doc = await db.collection("dailyScores").doc(`${currentUser.uid}_${today}`).get();
@@ -870,81 +942,36 @@
             const doc = await db.collection("allTimeScores").doc(currentUser.uid).get();
             return doc.exists ? doc.data() : null;
           }
-        } catch (e) {
-          console.error("Fetch user best error:", e);
-          return null;
-        }
-      }
-
-      async function getUserRank(tab) {
-        if (!firebaseReady || !currentUser) return null;
-        try {
-          const userBest = await fetchUserBest(tab);
-          if (!userBest) return null;
-
-          let query;
-          if (tab === "daily") {
-            const today = getTodayString();
-            // Count entries with better scores
-            const betterStreak = await db.collection("dailyScores")
-              .where("date", "==", today)
-              .where("streak", ">", userBest.streak)
-              .get();
-
-            const sameStreakBetterAttempts = await db.collection("dailyScores")
-              .where("date", "==", today)
-              .where("streak", "==", userBest.streak)
-              .where("attempts", "<", userBest.attempts)
-              .get();
-
-            return betterStreak.size + sameStreakBetterAttempts.size + 1;
-          } else {
-            const betterStreak = await db.collection("allTimeScores")
-              .where("streak", ">", userBest.streak)
-              .get();
-
-            const sameStreakBetterAttempts = await db.collection("allTimeScores")
-              .where("streak", "==", userBest.streak)
-              .where("attempts", "<", userBest.attempts)
-              .get();
-
-            return betterStreak.size + sameStreakBetterAttempts.size + 1;
-          }
-        } catch (e) {
-          console.error("Get user rank error:", e);
-          return null;
-        }
       }
 
       // ===== Leaderboard UI Functions =====
 
       function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+        return (typeof str === "string" ? str : "Anonymous").replace(/[&<>"']/g, char =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+      }
+
+      function countLabel(value) {
+        return validCount(value) ? String(value) : "Unavailable";
       }
 
       function openLeaderboard() {
-        if (!firebaseReady) {
-          alert("Firebase is not configured. Add your Firebase config to enable the leaderboard.");
-          return;
-        }
-        document.getElementById("leaderboardModal").classList.remove("hidden");
-        document.body.style.overflow = "hidden";
-        currentLeaderboardTab = "daily";
-        document.getElementById("tabDaily").className = "tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200";
-        document.getElementById("tabAllTime").className = "tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200";
+        openModal("leaderboardModal");
         updateLeaderboardAuthUI();
-        loadLeaderboardData("daily");
+        switchLeaderboardTab("daily");
       }
 
       function closeLeaderboard() {
-        document.getElementById("leaderboardModal").classList.add("hidden");
-        document.body.style.overflow = "";
+        if (modalStack.at(-1)?.element.id !== "leaderboardModal") return;
+        leaderboardRequest++;
+        closeModal("leaderboardModal");
       }
 
       function switchLeaderboardTab(tab) {
+        if (tab !== "daily" && tab !== "alltime") return;
         currentLeaderboardTab = tab;
+        document.getElementById("tabDaily").setAttribute("aria-pressed", String(tab === "daily"));
+        document.getElementById("tabAllTime").setAttribute("aria-pressed", String(tab === "alltime"));
         if (tab === "daily") {
           document.getElementById("tabDaily").className = "tab-active px-4 py-2 rounded-lg text-sm transition-all duration-200";
           document.getElementById("tabAllTime").className = "tab-inactive px-4 py-2 rounded-lg text-sm transition-all duration-200";
@@ -956,14 +983,19 @@
       }
 
       async function loadLeaderboardData(tab) {
+        const request = ++leaderboardRequest;
+        const revision = authRevision;
+        const date = getTodayString();
         const content = document.getElementById("leaderboardContent");
-        content.innerHTML = '<div class="flex justify-center py-8"><div class="leaderboard-spinner"></div></div>';
+        content.innerHTML = '<div class="flex justify-center py-8"><span>Loading scores…</span><div class="leaderboard-spinner" aria-hidden="true"></div></div>';
 
         try {
           const [entries, userBest] = await Promise.all([
             tab === "daily" ? fetchDailyLeaderboard() : fetchAllTimeLeaderboard(),
             fetchUserBest(tab)
           ]);
+          if (request !== leaderboardRequest || revision !== authRevision || tab !== currentLeaderboardTab) return;
+          if (tab === "daily" && date !== getTodayString()) return loadLeaderboardData(tab);
 
           // Update auth section with user best
           updateLeaderboardAuthUI(userBest, tab);
@@ -981,8 +1013,8 @@
 
           renderLeaderboardEntries(entries);
         } catch (e) {
-          console.error("Load leaderboard error:", e);
-          content.innerHTML = '<div class="text-center py-8 text-red-400">Failed to load leaderboard. Please try again.</div>';
+          if (request !== leaderboardRequest || revision !== authRevision || tab !== currentLeaderboardTab) return;
+          content.innerHTML = '<div class="text-center py-8 text-red-400">Scores could not be loaded. This is not an empty leaderboard. <button class="underline" onclick="loadLeaderboardData(currentLeaderboardTab)">Retry</button></div>';
         }
       }
 
@@ -992,18 +1024,24 @@
 
         let html = '<div class="space-y-2">';
         entries.forEach((entry, i) => {
+          entry = entry && typeof entry === "object" ? entry : {};
           const rank = i + 1;
           const rankDisplay = rank <= 3 ? `<span class="text-lg">${rankIcons[i]}</span>` : `<span class="text-gray-400 font-bold text-sm w-6 text-center">${rank}</span>`;
           const isSelf = currentUser && entry.userId === currentUser.uid;
           const selfClass = isSelf ? 'leaderboard-self' : 'bg-slate-800/50 border border-slate-700/30';
 
-          const displayName = escapeHtml(entry.displayName || 'Anonymous');
-          const truncatedName = displayName.length > 15 ? displayName.substring(0, 15) + '...' : displayName;
+          const displayName = typeof entry.displayName === "string" ? entry.displayName : "Anonymous";
+          const truncatedName = escapeHtml(displayName.length > 15 ? displayName.slice(0, 15) + '…' : displayName);
 
           let dateStr = '';
-          if (entry.timestamp && entry.timestamp.toDate) {
-            dateStr = entry.timestamp.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          }
+          try {
+            if (typeof entry.timestamp?.toDate === "function") {
+              const date = entry.timestamp.toDate();
+              if (date instanceof Date && Number.isFinite(date.getTime())) {
+                dateStr = escapeHtml(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) + " UTC");
+              }
+            }
+          } catch (e) { /* Malformed timestamps do not prevent other scores from rendering. */ }
 
           html += `
             <div class="${selfClass} rounded-lg px-3 py-2.5 flex items-center gap-3">
@@ -1013,8 +1051,8 @@
                 ${dateStr ? `<div class="text-xs text-gray-500">${dateStr}</div>` : ''}
               </div>
               <div class="text-right flex-shrink-0">
-                <div class="font-black text-yellow-400">${entry.streak}</div>
-                <div class="text-xs text-gray-400">${entry.attempts} attempts</div>
+                <div class="font-black text-yellow-400">${countLabel(entry.streak)} wins</div>
+                <div class="text-xs text-gray-400">${countLabel(entry.attempts)} attempts</div>
               </div>
             </div>
           `;
@@ -1026,23 +1064,28 @@
       function updateLeaderboardAuthUI(userBest, tab) {
         const section = document.getElementById("leaderboardAuthSection");
         if (!section) return;
+        const restoreFocus = section.contains(document.activeElement);
+        function renderAuth(markup) {
+          section.innerHTML = markup;
+          if (restoreFocus) section.querySelector("button")?.focus();
+        }
 
         if (!currentUser) {
-          section.innerHTML = `
+          renderAuth(`
             <div class="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4 text-center">
-              <div class="text-sm text-gray-400 mb-3">Sign in to save scores and see your rank</div>
+              <div class="text-sm text-gray-400 mb-3">Sign in to publish scores. Rankings favor longer win streaks, then fewer attempts.</div>
               <button onclick="signInWithGoogle()" class="px-4 py-2 bg-white text-gray-800 font-bold rounded-lg hover:bg-gray-100 transition-colors text-sm flex items-center gap-2 mx-auto">
                 <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
                 Sign in with Google
               </button>
             </div>
-          `;
+          `);
           return;
         }
 
         // Signed in
         if (!userBest && tab) {
-          section.innerHTML = `
+          renderAuth(`
             <div class="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm text-gray-300 font-bold">${escapeHtml(userDisplayName || 'Player')}</span>
@@ -1050,74 +1093,73 @@
               </div>
               <div class="text-sm text-gray-400">No scores yet — win a game!</div>
             </div>
-          `;
+          `);
           return;
         }
 
         if (userBest && tab) {
-          section.innerHTML = `
+          renderAuth(`
             <div class="bg-slate-800/50 border border-yellow-500/20 rounded-lg p-4">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm text-gray-300 font-bold">${escapeHtml(userDisplayName || 'Player')}</span>
                 <button onclick="signOutUser()" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Sign out</button>
               </div>
-              <div class="text-sm font-bold text-yellow-400">Your Best: ${userBest.streak} streak in ${userBest.attempts} attempts</div>
+              <div class="text-sm font-bold text-yellow-400">Your Best: ${countLabel(userBest.streak)} streak in ${countLabel(userBest.attempts)} attempts</div>
             </div>
-          `;
+          `);
 
-          // Fetch rank asynchronously
-          getUserRank(tab).then(rank => {
-            if (rank !== null) {
-              const rankEl = section.querySelector('.user-rank-display');
-              if (!rankEl) {
-                const bestDiv = section.querySelector('.text-yellow-400');
-                if (bestDiv) {
-                  bestDiv.insertAdjacentHTML('afterend', `<div class="user-rank-display text-xs text-gray-400 mt-1">Rank: #${rank}</div>`);
-                }
-              }
-            }
-          });
           return;
         }
 
         // Default: signed in, no tab context
-        section.innerHTML = `
+        renderAuth(`
           <div class="bg-slate-800/50 border border-slate-700/30 rounded-lg p-4">
             <div class="flex items-center justify-between">
               <span class="text-sm text-gray-300 font-bold">${escapeHtml(userDisplayName || 'Player')}</span>
               <button onclick="signOutUser()" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Sign out</button>
             </div>
           </div>
-        `;
+        `);
       }
 
-      async function autoSaveScore() {
-        if (!firebaseReady || !currentUser || !userDisplayName) return false;
+      function submitScore(score) {
+        if (!currentUser || !userDisplayName || !validCount(score.streak) || score.streak < 1 ||
+            !validCount(score.attempts) || score.attempts < score.streak) {
+          return Promise.reject(new Error("No valid winning score"));
+        }
+        const userId = currentUser.uid;
+        const revision = authRevision;
+        const newScore = {
+          userId, displayName: userDisplayName, streak: score.streak, attempts: score.attempts,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        const dailyRef = db.collection("dailyScores").doc(`${userId}_${score.date}`);
+        const allTimeRef = db.collection("allTimeScores").doc(userId);
+        const save = scoreQueue.catch(() => {}).then(() => {
+          if (revision !== authRevision || currentUser?.uid !== userId) throw new Error("Session changed");
+          return db.runTransaction(async transaction => {
+            const daily = await transaction.get(dailyRef);
+            const allTime = await transaction.get(allTimeRef);
+            if (revision !== authRevision || currentUser?.uid !== userId) throw new Error("Session changed");
+            if (isBetterScore(newScore, daily.exists ? daily.data() : null)) {
+              transaction.set(dailyRef, { ...newScore, date: score.date });
+            }
+            if (isBetterScore(newScore, allTime.exists ? allTime.data() : null)) {
+              transaction.set(allTimeRef, newScore);
+            }
+          });
+        });
+        scoreQueue = save;
+        return save;
+      }
+
+      async function autoSaveScore(score = winningScore) {
+        if (!firebaseReady || !currentUser || !userDisplayName || !score) return false;
         try {
-          const today = getTodayString();
-          const newScore = {
-            userId: currentUser.uid,
-            displayName: userDisplayName,
-            streak: winStreak,
-            attempts: streakAttempts,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          };
-
-          const dailyDocId = `${currentUser.uid}_${today}`;
-          const dailyRef = db.collection("dailyScores").doc(dailyDocId);
-          const dailyDoc = await dailyRef.get();
-          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, dailyDoc.exists ? dailyDoc.data() : null)) {
-            await dailyRef.set({ ...newScore, date: today });
-          }
-
-          const allTimeRef = db.collection("allTimeScores").doc(currentUser.uid);
-          const allTimeDoc = await allTimeRef.get();
-          if (isBetterScore({ streak: newScore.streak, attempts: newScore.attempts }, allTimeDoc.exists ? allTimeDoc.data() : null)) {
-            await allTimeRef.set(newScore);
-          }
+          await submitScore({ ...score });
           return true;
         } catch (e) {
-          console.error("Auto-save score error:", e);
+          setStatus("Automatic score submission failed. Your local win is saved; use Save to Leaderboard to retry.");
           return false;
         }
       }
@@ -1292,6 +1334,7 @@
       }
 
       function updateStats() {
+        ensureUTCDay();
         // Update wins display based on current mode
         if (winsDisplayMode === "today") {
           document.getElementById("winsDisplay").textContent = dailyWins;
@@ -1329,19 +1372,28 @@
           const successRate = ((allTimeWins / totalAttempts) * 100).toFixed(1);
           document.getElementById("userSuccessRate").textContent =
             successRate + "%";
+        } else {
+          document.getElementById("userSuccessRate").textContent = "No completed rounds yet";
         }
+        document.getElementById("observedExplanation").textContent =
+          `${allTimeWins} wins / ${totalAttempts} completed rounds in this browser. The theoretical win rate is (5/6)^10 ≈ 16.15%. Small samples vary; past results do not change the next roll's odds.`;
+
+        const remaining = 10 - rollCount;
+        const prob = gameOver && currentRoll === 1 ? 0 : Math.pow(5 / 6, remaining) * 100;
+        currentProb.textContent = prob.toFixed(2) + "%";
+        liveProb.classList.remove("hidden");
+        document.getElementById("roundExplanation").textContent = gameOver
+          ? (currentRoll === 1
+            ? `This round ended on roll ${rollCount + 1}. Its remaining win chance is now 0%. A new round starts at 16.15%; each roll is independent.`
+            : "Ten safe rolls completed: this round is won (100%). A new round starts at 16.15%; previous wins do not improve its odds.")
+          : `${rollCount} safe rolls completed; ${remaining} left. Remaining win chance: (5/6)^${remaining} = ${prob.toFixed(2)}%. The next roll has a 1/6 chance of being 1.`;
 
         if (rollCount > 0 && !gameOver) {
-          const prob = Math.pow(5 / 6, rollCount) * 100;
-          currentProb.textContent = prob.toFixed(1) + "%";
-          liveProb.classList.remove("hidden");
-
           intensityMessage.querySelector("div").textContent =
             getIntensityMessage(rollCount);
           intensityMessage.classList.remove("hidden");
         } else {
           intensityMessage.classList.add("hidden");
-          liveProb.classList.add("hidden");
         }
 
         // Save after every update
@@ -1350,8 +1402,13 @@
 
       function rollDice() {
         if (gameOver || isRolling || rollCount >= 10) return;
-
+        ensureUTCDay();
         isRolling = true;
+        actionButton.disabled = true;
+        if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+          finishRoll();
+          return;
+        }
         diceContainer.classList.add("bounce-animation");
 
         // Animate rolling
@@ -1373,6 +1430,7 @@
 
       function finishRoll() {
         setTimeout(() => {
+          ensureUTCDay();
           const result = Math.floor(Math.random() * 6) + 1;
           currentRoll = result;
 
@@ -1387,9 +1445,11 @@
           }
 
           dice.innerHTML = `<div class="text-8xl font-black text-white drop-shadow-2xl">${result}</div>`;
+          dice.setAttribute("aria-label", `Die result: ${result}`);
 
           diceContainer.classList.remove("bounce-animation");
           isRolling = false;
+          actionButton.disabled = false;
 
           if (result === 1) {
             // LOSS
@@ -1403,23 +1463,10 @@
             }
 
             if (winStreak > 0) {
-              streakAttempts = 0; // Reset streak attempts on loss
+              streakAttempts = 1; // This loss starts the next attempt sequence.
             }
 
             winStreak = 0; // Reset win streak on loss
-
-            // Build personal best info for signed-in users
-            let personalBestHtml = '';
-            if (firebaseReady && currentUser) {
-              fetchUserBest('alltime').then(best => {
-                if (best) {
-                  const bestEl = document.getElementById('lossPersonalBest');
-                  if (bestEl) {
-                    bestEl.innerHTML = `<div class="text-sm text-gray-400 mt-3">Your best: ${best.streak} streak in ${best.attempts} attempts</div>`;
-                  }
-                }
-              });
-            }
 
             gameStatus.innerHTML = `
                         <div class="pulse-slow">
@@ -1436,7 +1483,6 @@
                                   } away from victory!</div>`
                                 : ""
                             }
-                            <div id="lossPersonalBest"></div>
                         </div>
                     `;
             gameStatus.classList.remove("hidden");
@@ -1453,6 +1499,7 @@
               gameOver = true;
               totalAttempts++;
               dailyAttempts++;
+              streakAttempts++;
               bestStreak = 10;
               dailyWins++; // Increment total daily wins
               allTimeWins++; // Increment all-time wins
@@ -1465,17 +1512,20 @@
               if (winStreak > allTimeBestStreak) {
                 allTimeBestStreak = winStreak;
               }
+              winningScore = Object.freeze({
+                streak: winStreak, attempts: streakAttempts, date: getTodayString(), roundId
+              });
 
               gameStatus.innerHTML = `
                             <div class="bounce-animation">
                                 <div class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 mb-2 drop-shadow-2xl">
-                                    🎉 JACKPOT! 🎉
+                                    🎉 ROUND WON! 🎉
                                 </div>
                                 <div class="text-2xl text-green-400 font-bold">
                                     YOU BEAT THE ODDS!
                                 </div>
                                 <div class="text-sm text-gray-400 mt-2">
-                                    Only 16.2% of players make it this far!
+                                    The theoretical chance of ten safe rolls is about 16.15%. No prizes—just probability!
                                 </div>
                             </div>
                         `;
@@ -1483,24 +1533,18 @@
 
               actionButton.insertAdjacentHTML(
                 "beforebegin",
-                '<button onclick="shareScore()" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">📤 Share Your Victory</button>'
+                '<button id="shareScoreBtn" onclick="shareScore(this)" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">📤 Share Your Victory</button>'
               );
 
-              // Auto-save if logged in, otherwise show manual button
+              updateSaveToLeaderboardButton();
               if (firebaseReady && currentUser && userDisplayName) {
-                autoSaveScore().then(saved => {
-                  if (saved) {
-                    actionButton.insertAdjacentHTML(
-                      "beforebegin",
-                      '<div id="autoSavedMsg" class="text-sm text-green-400 font-bold">✅ Leaderboard updated</div>'
-                    );
+                const score = winningScore;
+                const revision = authRevision;
+                autoSaveScore(score).then(saved => {
+                  if (saved && score.roundId === roundId && revision === authRevision) {
+                    showSaveSuccess();
                   }
                 });
-              } else if (firebaseReady) {
-                actionButton.insertAdjacentHTML(
-                  "beforebegin",
-                  '<button id="saveToLeaderboardBtn" onclick="saveScoreToLeaderboard()" class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200">🏆 Save to Leaderboard</button>'
-                );
               }
 
               actionButton.textContent = "🔄 CONTINUE STREAK";
@@ -1516,6 +1560,9 @@
       }
 
       function reset() {
+        if (isRolling) return;
+        roundId++;
+        winningScore = null;
         currentRoll = null;
         rollCount = 0;
         gameOver = false;
@@ -1524,14 +1571,13 @@
         dice.className =
           "w-40 h-40 bg-slate-700 rounded-3xl shadow-2xl flex items-center justify-center border-4 border-dashed border-purple-500/50";
         dice.innerHTML = '<span class="text-6xl">🎲</span>';
+        dice.setAttribute("aria-label", "Die not rolled yet");
 
         gameStatus.classList.add("hidden");
         gameStatus.innerHTML = "";
 
         // Remove share button if it exists
-        const shareButton = document.querySelector(
-          'button[onclick="shareScore()"]'
-        );
+        const shareButton = document.getElementById("shareScoreBtn");
         if (shareButton) {
           shareButton.remove();
         }
@@ -1556,13 +1602,9 @@
       }
 
       // Share score function (Wordle-style)
-      function shareScore() {
-        const today = new Date().toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-        const shareText = `Never Roll a 1 🎲 ${today}
+      async function shareScore(button) {
+        ensureUTCDay();
+        const shareText = `Never Roll a 1 🎲 ${getTodayString()} UTC
 
 Win Streak: ${winStreak} 🔥
 Total Attempts: ${totalAttempts}
@@ -1570,24 +1612,22 @@ Today's Wins: ${dailyWins}
 
 neverrollone.com`;
 
-        // Try to use native share API (mobile)
-        if (navigator.share) {
-          navigator
-            .share({
-              text: shareText,
-            })
-            .catch((err) => console.log("Share cancelled"));
-        } else {
-          // Fallback: Copy to clipboard
-          navigator.clipboard.writeText(shareText).then(() => {
-            // Show copied message
-            const btn = event.target;
-            const originalText = btn.textContent;
-            btn.textContent = "✅ Copied!";
+        try {
+          if (navigator.share) {
+            await navigator.share({ text: shareText });
+            setStatus("Share completed.");
+          } else {
+            if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+            await navigator.clipboard.writeText(shareText);
+            const originalText = button.textContent;
+            button.textContent = "✅ Copied!";
+            setStatus("Score copied to clipboard.");
             setTimeout(() => {
-              btn.textContent = originalText;
+              if (button.isConnected) button.textContent = originalText;
             }, 2000);
-          });
+          }
+        } catch (e) {
+          setStatus(e.name === "AbortError" ? "Sharing cancelled." : "Sharing failed. You can copy the page address manually: https://neverrollone.com/");
         }
       }
 
@@ -1608,17 +1648,16 @@ neverrollone.com`;
       loadGameData();
       updateStats();
 
-      // Handle ad visibility based on SHOW_ADS toggle
-      const topBanner = document.getElementById("topBannerAd");
-      const bottomBanner = document.getElementById("bottomBannerAd");
-      const mainContent = document.getElementById("mainContent");
-
-      if (!SHOW_ADS) {
-        topBanner.style.display = "none";
-        bottomBanner.style.display = "none";
-        // Add top padding when ads are hidden
-        mainContent.style.paddingTop = "2rem";
+      function refreshUTCDay() {
+        if (!ensureUTCDay()) return;
+        updateStats();
+        if (!document.getElementById("leaderboardModal").classList.contains("hidden")) {
+          loadLeaderboardData(currentLeaderboardTab);
+        }
       }
+      setInterval(refreshUTCDay, 1000);
+      document.addEventListener("visibilitychange", refreshUTCDay);
+      window.addEventListener("focus", refreshUTCDay);
     </script>
   </body>
 </html>

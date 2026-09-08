@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - Never Roll a 1 | Frequently Asked Questions</title>
     <meta name="description" content="Frequently asked questions about Never Roll a 1. Learn about game randomness, winning odds, leaderboard, mobile support, data safety, and more.">
+    <link rel="canonical" href="https://neverrollone.com/faq.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -19,17 +20,23 @@
     <meta property="twitter:title" content="FAQ - Never Roll a 1">
     <meta property="twitter:description" content="Common questions and answers about the Never Roll a 1 dice probability game.">
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
     <div class="max-w-4xl mx-auto p-8">
-        <div class="mb-8">
-            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
-        </div>
+        <header class="mb-8">
+            <nav aria-label="Primary" class="flex flex-wrap gap-4 text-purple-300">
+                <a href="index.html" class="hover:underline">Play</a>
+                <a href="how-to-play.html" class="hover:underline">How to Play</a>
+                <a href="about.html" class="hover:underline">About</a>
+                <a href="faq.html" aria-current="page" class="hover:underline">FAQ</a>
+                <a href="privacy.html" class="hover:underline">Privacy</a>
+                <a href="terms.html" class="hover:underline">Terms</a>
+                <a href="contact.html" class="hover:underline">Contact</a>
+            </nav>
+        </header>
 
+        <main>
         <h1 class="text-4xl font-bold mb-8">Frequently Asked Questions</h1>
 
         <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-6 text-gray-300">
@@ -37,80 +44,90 @@
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Is the dice roll truly random?</h2>
                 <p>
-                    Yes. The game uses JavaScript's built-in <code class="text-purple-400 bg-slate-700/50 px-1.5 py-0.5 rounded text-sm">Math.random()</code> function, which generates pseudorandom numbers using your browser's random number generator. While no software-based RNG is "truly" random in a cryptographic sense, the algorithm produces results that are statistically indistinguishable from fair dice rolls for gaming purposes. Every roll is independent, meaning previous results have absolutely no effect on future outcomes.
+                    The game uses JavaScript's <code class="text-purple-400 bg-slate-700/50 px-1.5 py-0.5 rounded text-sm">Math.random()</code>, a browser-provided pseudorandom generator, and maps its output to six faces. It does not adjust the odds based on previous wins or losses. This is intended to model independent fair-die rolls for a probability game, not to provide cryptographic randomness or independently certified outcomes.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">What are my actual odds of winning?</h2>
                 <p>
-                    Your chance of winning a single game (surviving 10 rolls without a 1) is exactly 16.15%, or roughly 1 in 6.2 attempts. This comes from the formula (5/6)^10. Each roll has a 5 out of 6 chance of being safe, and multiplying that probability across ten independent rolls gives you the overall win rate. For a deeper dive into the math, visit our <a href="probability-guide.html" class="text-purple-400 hover:underline">Probability Guide</a>.
+                    For independent fair-die rolls, the chance of winning one attempt is exactly (5/6)^10, or approximately 16.15%. That is about 1 in 6.2, not a promise of a win every six attempts. Each roll has a 5 out of 6 chance of being safe; multiply those probabilities across ten rolls. For a deeper explanation, visit our <a href="probability-guide.html" class="text-purple-400 hover:underline">Probability Guide</a>.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">I keep losing. Is the game rigged?</h2>
                 <p>
-                    The game is not rigged. With an 83.85% chance of losing each round, most attempts end in failure. Losing several games in a row is not only possible but expected. The probability of losing 10 games in a row is about 16.8%, meaning roughly one in six players who play exactly 10 games will not win any of them. If you feel the game is unfairly difficult, it is actually a demonstration of how poorly human intuition handles compound probability. We expect each roll to be easy (83.3% success), so we underestimate how quickly those probabilities stack against us.
+                    The game does not change the odds to make you lose. Under the independent fair-die model, an attempt has about an 83.85% chance of failure. The probability of zero wins in ten complete attempts is (1 − (5/6)^10)^10 ≈ 17.18%. This is a theoretical probability, not a measured player statistic. Previous losses do not make your next attempt more likely to win, and no number of attempts guarantees success.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">How does the leaderboard work?</h2>
                 <p>
-                    The leaderboard tracks the highest win streaks among players who sign in with Google. It has two tabs: Daily (top 10 scores for today) and All-Time (top 25 scores ever). Scores are ranked primarily by win streak length, with total attempts as a tiebreaker (fewer attempts is better). Your score is only updated when you achieve a new personal best, so playing more games never lowers your ranking. You can save your score after any win using the "Save to Leaderboard" button.
+                    The leaderboard shows Daily (top 10) and All-Time (top 25) entries, ranked by win streak and then fewer attempts. Daily entries use today's UTC date. While signed in with a leaderboard display name, a win automatically attempts to save a qualifying personal-best score; there is no separate opt-in for each win. Other players' results can still change your ranking. These are client-submitted scores, not independently verified records. To flag an entry, use the <a href="contact.html#leaderboard-report" class="text-purple-400 hover:underline">leaderboard reporting instructions</a>.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Do I need an account to play?</h2>
                 <p>
-                    No. The game is fully playable without signing in. All game statistics (wins, streaks, attempts) are stored locally in your browser and do not require an account. Signing in with Google is only needed if you want to save scores to the leaderboard and compare your performance with other players.
+                    No. Dice rolling and local statistics work without an account, and anyone can view the public leaderboard. Google sign-in and a display name are needed to submit scores. Stay signed out if you do not want your wins automatically submitted to the leaderboard.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Does the game work on mobile devices?</h2>
                 <p>
-                    Yes. Never Roll a 1 is fully responsive and works on smartphones and tablets of all sizes. The interface adapts to smaller screens, and all features including rolling, stats tracking, sharing, and the leaderboard work on mobile browsers. For the best experience, use a modern browser like Chrome, Safari, Firefox, or Edge.
+                    The layout is designed for phones, tablets, and desktops using a modern browser. Browser settings can affect storage, Google sign-in, and sharing support. If something does not work on your device, send the browser and device details through the <a href="contact.html" class="text-purple-400 hover:underline">contact page</a>.
                 </p>
             </section>
 
             <section>
-                <h2 class="text-xl font-bold text-white mb-2">Is my data safe?</h2>
+                <h2 class="text-xl font-bold text-white mb-2">What data is local, and what becomes public?</h2>
                 <p>
-                    Yes. Game statistics (scores, streaks, attempt counts) are stored locally in your browser's localStorage, meaning they never leave your device unless you choose to save a score to the leaderboard. If you sign in for the leaderboard, we store only your display name, user ID, win streak, and attempt count in our database. We do not access or store your email, Google profile data, or any other personal information. For full details, see our <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a>.
+                    Browser localStorage holds your game statistics. If you use Google sign-in, Firebase Authentication handles profile information, email, provider identifiers, an account UID, and your auth session. Firestore stores your chosen display name and profile creation timestamp. While signed in with a display name, winning automatically submits qualifying scores. Daily and all-time score records are publicly readable and contain your account-linked user ID, display name, streak, attempts, and timestamp; daily records also include the UTC date. The ID is pseudonymous, not anonymous. Choose a non-identifying display name and read the <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a>.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Why did my stats reset?</h2>
                 <p>
-                    Daily stats (today's wins, today's attempts, current win streak) reset automatically at midnight local time. This is by design so that the daily leaderboard tracks fresh competition each day. All-time stats (total wins, total attempts, all-time best streak) are preserved across days. If all your stats disappeared, you may have cleared your browser's local storage, used a private/incognito window, or switched to a different browser or device. Since data is stored locally, it does not sync between devices.
+                    Daily wins, daily attempts, and the daily leaderboard use midnight UTC, not your local midnight. The game applies the new day when it next checks the date. Your active win streak carries across UTC midnight; a loss, not a date change, resets it. All-time stats are preserved across days when browser storage is available. A new daily view does not delete older cloud score records. If all local stats disappeared, browser storage may have been cleared, or you may be using a different browser, device, or private window. Local stats do not sync between devices, and signing in does not restore them from leaderboard records.
                 </p>
+                <p class="mt-3">Attempts count completed rounds, including wins, rather than individual die rolls. A loss resets the win streak and starts a new streak-attempt sequence with that loss counted as its first attempt.</p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Can I play offline?</h2>
                 <p>
-                    The core game requires an initial page load from the internet, but once loaded, the dice rolling and stats tracking work without an active connection since all game logic runs in your browser. However, leaderboard features, ads, and saving scores to the server require an internet connection. If you lose connectivity mid-session, your local stats will still be saved.
+                    After the game has fully loaded while online, dice rolling and local stats can continue in the open page without a connection, provided browser storage is available. Sign-in, loading leaderboard entries, and saving cloud scores require internet access. Offline wins are not guaranteed to reach the leaderboard later. Reopening or reloading the site offline is not supported as an offline-install feature. Ads are currently disabled.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">How can I suggest a new feature?</h2>
                 <p>
-                    We love hearing from players! Visit our <a href="contact.html" class="text-purple-400 hover:underline">Contact page</a> to send suggestions, bug reports, or general feedback. We read every message and seriously consider feature requests from the community. Past player suggestions have directly influenced the development of features like the win streak tracker and daily leaderboard.
+                    Visit our <a href="contact.html" class="text-purple-400 hover:underline">Contact page</a> to send suggestions, bug reports, or general feedback to the project maintainer. Explain the idea and how it would help the game. There is no guaranteed response time or promise that a feature will be implemented.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-xl font-bold text-white mb-2">Is this a gambling game?</h2>
                 <p>
-                    No. Never Roll a 1 is a free entertainment and educational game. No real money is wagered, no purchases are required, and no monetary prizes are offered. The game is designed to teach and demonstrate probability concepts in an engaging way. It is suitable for all ages. For our full legal terms, see the <a href="terms.html" class="text-purple-400 hover:underline">Terms of Service</a>.
+                    No money is wagered, no purchases are required, and no monetary prizes are offered. This is a free entertainment and probability-learning game intended for a general audience, not specifically directed to children. Visitors below the applicable age for these account services in their jurisdiction should not use Google sign-in or submit leaderboard entries. See the <a href="terms.html" class="text-purple-400 hover:underline">Terms of Service</a> and <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a>.
                 </p>
             </section>
 
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">How do I remove my data?</h2>
+                <p>Clear this site's browser storage to remove local statistics. Signing out ends the app's signed-in session but does not remove local stats or cloud records. To request deletion of the Firebase Authentication account, Firestore user profile, and daily or all-time scores, follow the <a href="contact.html#data-deletion" class="text-purple-400 hover:underline">data deletion instructions</a>. Remote deletion requires manual handling and may require account verification.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-white mb-2">Does the site use ads or Google Analytics?</h2>
+                <p>Ads are disabled and no AdSense ad requests are sent. Google Analytics is not configured. Hosting and Firebase may still process service requests as described in the <a href="privacy.html" class="text-purple-400 hover:underline">Privacy Policy</a>. Any future advertising launch requires an updated policy, validated ad setup, and a Google-certified CMP where applicable, with verified consent and withdrawal choices.</p>
+            </section>
         </div>
 
         <div class="mt-8 text-center">
@@ -119,8 +136,9 @@
             </a>
         </div>
 
-        <!-- Footer Navigation -->
-        <div class="mt-12 text-center text-sm text-gray-500 space-y-2">
+        </main>
+        <footer class="mt-12 text-center text-sm text-gray-300 space-y-2">
+            <nav aria-label="Footer">
             <div class="space-x-4">
                 <a href="index.html" class="hover:text-purple-400">Play</a>
                 <span>·</span>
@@ -141,7 +159,8 @@
                 <span>·</span>
                 <a href="contact.html" class="hover:text-purple-400">Contact</a>
             </div>
-        </div>
+            </nav>
+        </footer>
     </div>
 </body>
 </html>

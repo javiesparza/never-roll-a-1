@@ -20,17 +20,22 @@
     <meta property="twitter:description" content="Dive deep into compound probability, gambler's fallacy, and the mathematics that make Never Roll a 1 so challenging.">
     <meta property="twitter:image" content="https://neverrollone.com/preview.png">
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="canonical" href="https://neverrollone.com/probability-guide.html">
+    <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
     <div class="max-w-4xl mx-auto p-8">
-        <div class="mb-8">
-            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
-        </div>
+        <nav aria-label="Main navigation" class="site-nav mb-8 flex flex-wrap gap-4">
+            <a href="index.html">Play</a>
+            <a href="how-to-play.html">How to Play</a>
+            <a href="probability-guide.html" aria-current="page">Probability Guide</a>
+            <a href="dice-facts.html">Dice Facts</a>
+            <a href="faq.html">FAQ</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
 
+        <main id="main-content">
         <h1 class="text-4xl font-bold mb-8">Probability Guide</h1>
 
         <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-8 text-gray-300">
@@ -38,10 +43,10 @@
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">Why Is This Game So Hard?</h2>
                 <p>
-                    At first glance, Never Roll a 1 seems straightforward. Each roll gives you a comfortable 83.3% chance of surviving. Five out of six outcomes are safe. But the game does not ask you to survive one roll. It asks you to survive ten in a row, and that is where compound probability transforms a seemingly easy challenge into a genuinely difficult one.
+                    Never Roll a 1 is a free, non-wagering game about completing ten rolls without a 1. All calculations on this page assume independent rolls of a fair six-sided die. They describe a mathematical model, not a measurement or independent certification of the site's random generator. Five of the six possible results are safe on each roll, but every roll in the attempt must be safe to win.
                 </p>
                 <p class="mt-3">
-                    The core insight is this: when you need multiple independent events to all succeed, you multiply their individual probabilities together. Each multiplication makes the overall probability smaller. By the time you have multiplied 83.3% by itself ten times, the result is a surprisingly slim 16.15%.
+                    When independent events must all succeed, multiply their probabilities. Use the exact fraction 5/6 at each step, not a rounded percentage. Multiplying ten copies gives approximately 16.15%. Fractions and formulas below are exact; displayed percentages and reciprocal frequencies are rounded.
                 </p>
             </section>
 
@@ -60,23 +65,24 @@
                     P(win) = (5/6)^10 = 9,765,625 / 60,466,176 ≈ 0.1615 or 16.15%
                 </div>
                 <p class="mt-3">
-                    This means that out of every 100 attempts, a player can expect to win roughly 16 times and lose roughly 84 times over the long run. The exact fraction is 9,765,625 out of 60,466,176, which simplifies to approximately 1 in 6.19 attempts.
+                    In 100 independent completed attempts, the expected number of wins is about 16.15. An actual set of 100 must have a whole number of wins and need not be close to that average. The reciprocal probability is approximately 6.19: "1 in 6.19" describes the theoretical rate, not a schedule guaranteeing one win every six attempts.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">Roll-by-Roll Probability Table</h2>
                 <p>
-                    The table below shows your probability of reaching each roll without hitting a 1, along with the probability of being eliminated at exactly that roll. Notice how the survival rate drops steadily while the cumulative elimination probability climbs.
+                    These probabilities are measured from the start of an attempt. With q = 5/6, surviving through roll r has probability q<sup>r</sup>; getting the first 1 on roll r has probability q<sup>r−1</sup>/6; and being eliminated by then has probability 1 − q<sup>r</sup>. "Survive through" means completing that roll safely, not merely reaching the button for it.
                 </p>
                 <div class="overflow-x-auto mt-4">
-                    <table class="w-full text-sm">
+                    <table id="roll-probabilities" class="w-full text-sm">
+                        <caption class="mb-3">Unconditional probabilities from the start, rounded to two decimal places</caption>
                         <thead>
                             <tr class="text-left border-b border-slate-600">
-                                <th class="py-2 px-3 text-purple-400">Roll</th>
-                                <th class="py-2 px-3 text-green-400">Survive to Here</th>
-                                <th class="py-2 px-3 text-red-400">Eliminated Here</th>
-                                <th class="py-2 px-3 text-yellow-400">Total Eliminated</th>
+                                <th scope="col" class="py-2 px-3 text-purple-400">Roll</th>
+                                <th scope="col" class="py-2 px-3 text-green-400">Survive Through Roll</th>
+                                <th scope="col" class="py-2 px-3 text-red-400">First 1 on This Roll</th>
+                                <th scope="col" class="py-2 px-3 text-yellow-400">Eliminated by This Roll</th>
                             </tr>
                         </thead>
                         <tbody class="font-mono">
@@ -94,36 +100,50 @@
                     </table>
                 </div>
                 <p class="mt-3 text-sm text-gray-400">
-                    Key takeaway: more than half of all players are eliminated before roll 5. Reaching roll 8 or beyond puts you in the top quarter of attempts.
+                    Under the model, 51.77% of attempts end within the first four rolls, and 23.26% survive all eight initial rolls. These are theoretical proportions of attempts, not observed percentages of players. The smaller "First 1" entries later in the table do not mean the die becomes safer: fewer attempts remain in progress.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">Why the Live Chance Goes Up</h2>
+                <p>
+                    The game displays a different quantity: your chance of finishing <em>given that you have already survived</em> r rolls. There are 10 − r rolls left, so the remaining-win chance is q<sup>10−r</sup>. Before starting it is approximately 16.15%; after a win it is 100%. After a loss, the attempt has ended and its chance is 0%.
+                </p>
+                <p class="mt-3">
+                    Suppose you are at 8/10. From the start, the chance of reaching this safe position was q<sup>8</sup> ≈ 23.26%. Now that you are here, only two safe rolls are needed: q<sup>2</sup> ≈ 69.44%. The next roll's chance of being safe is still 5/6 ≈ 83.33%. All three numbers are correct; they answer different questions.
+                </p>
+                <p class="mt-3">
+                    A useful check is q<sup>8</sup> × q<sup>2</sup> = q<sup>10</sup>. Multiply the chance of arriving safely by the chance of finishing from there to recover the original chance of winning. Conditioning removes obstacles already passed; it does not change future rolls.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">Win Streak Probabilities</h2>
                 <p>
-                    Winning a single game is hard enough, but the leaderboard rewards consecutive wins. Here are the odds of achieving various win streaks:
+                    Let p = (5/6)<sup>10</sup>. Before a specified block of k games begins, the chance that all k are wins is p<sup>k</sup>. For example, "the next five games are all wins" is one specified block. It is not the same question as "will a five-win streak occur anywhere in my next hundred games?"
                 </p>
                 <div class="overflow-x-auto mt-4">
-                    <table class="w-full text-sm">
+                    <table id="streak-probabilities" class="w-full text-sm">
+                        <caption class="mb-3">All games won in one specified block; approximate values</caption>
                         <thead>
                             <tr class="text-left border-b border-slate-600">
-                                <th class="py-2 px-3 text-purple-400">Win Streak</th>
-                                <th class="py-2 px-3 text-green-400">Probability</th>
-                                <th class="py-2 px-3 text-yellow-400">Approx. Odds</th>
+                                <th scope="col" class="py-2 px-3 text-purple-400">Consecutive Wins</th>
+                                <th scope="col" class="py-2 px-3 text-green-400">Probability</th>
+                                <th scope="col" class="py-2 px-3 text-yellow-400">Reciprocal Frequency</th>
                             </tr>
                         </thead>
                         <tbody class="font-mono">
-                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">1 win</td><td class="py-2 px-3 text-green-400">16.15%</td><td class="py-2 px-3 text-yellow-400">1 in 6</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">1 win</td><td class="py-2 px-3 text-green-400">16.15%</td><td class="py-2 px-3 text-yellow-400">1 in 6.19</td></tr>
                             <tr class="border-b border-slate-700/50"><td class="py-2 px-3">2 wins</td><td class="py-2 px-3 text-green-400">2.61%</td><td class="py-2 px-3 text-yellow-400">1 in 38</td></tr>
-                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">3 wins</td><td class="py-2 px-3 text-green-400">0.42%</td><td class="py-2 px-3 text-yellow-400">1 in 238</td></tr>
-                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">4 wins</td><td class="py-2 px-3 text-green-400">0.068%</td><td class="py-2 px-3 text-yellow-400">1 in 1,474</td></tr>
-                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">5 wins</td><td class="py-2 px-3 text-green-400">0.011%</td><td class="py-2 px-3 text-yellow-400">1 in 9,124</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">3 wins</td><td class="py-2 px-3 text-green-400">0.42%</td><td class="py-2 px-3 text-yellow-400">1 in 237</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">4 wins</td><td class="py-2 px-3 text-green-400">0.068%</td><td class="py-2 px-3 text-yellow-400">1 in 1,470</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">5 wins</td><td class="py-2 px-3 text-green-400">0.011%</td><td class="py-2 px-3 text-yellow-400">1 in 9,100</td></tr>
                             <tr><td class="py-2 px-3">10 wins</td><td class="py-2 px-3 text-green-400">0.0000012%</td><td class="py-2 px-3 text-yellow-400">1 in 83 million</td></tr>
                         </tbody>
                     </table>
                 </div>
                 <p class="mt-3">
-                    Each additional win multiplies the difficulty by roughly 6.2 times. A three-game streak is already a one-in-238 event, making it a genuinely rare achievement worth celebrating.
+                    In a longer session there are multiple possible starting positions, so the chance of seeing a streak somewhere is larger. Those candidate blocks overlap and are not independent: games 1–5 and games 2–6 share four outcomes. You cannot obtain an exact session probability just by multiplying a table entry by the number of possible starts. Nor does a small probability imply that a particular person must play that many games before seeing it.
                 </p>
             </section>
 
@@ -133,7 +153,7 @@
                     One of the most common misconceptions in probability is the gambler's fallacy: the belief that past outcomes influence future results in independent events. If you have lost five games in a row, you might feel that you are "due" for a win. This intuition is wrong.
                 </p>
                 <p class="mt-3">
-                    Each game of Never Roll a 1 is completely independent of every other game. The die has no memory. It does not know you lost the last five rounds. Your probability of winning the next round is always exactly 16.15%, regardless of your recent history. A player on a ten-game losing streak has the exact same odds as a player who just won three in a row.
+                    Under the independent-roll model, the probability of winning the next fresh attempt remains exactly (5/6)<sup>10</sup>, approximately 16.15%, regardless of recent results. A ten-game losing streak does not require a compensating win. A three-game winning streak does not make the next attempt more likely to succeed.
                 </p>
                 <p class="mt-3">
                     The flip side of this fallacy is equally important: a winning streak does not mean you are "on a roll" in any mathematical sense. While it feels like momentum, each new game resets to the same 16.15% baseline. The emotional experience of streaks is real, but the underlying odds are constant.
@@ -143,63 +163,74 @@
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">Expected Value and the Long Run</h2>
                 <p>
-                    In probability theory, the expected value tells you what the average outcome looks like over many trials. For Never Roll a 1, the expected number of rolls before hitting a 1 follows a geometric distribution:
+                    Imagine rolling without the game's ten-roll limit, stopping at the first 1. Let T count all rolls, including that final 1. This is a geometric waiting time with probability 1/6 of ending on each roll:
                 </p>
                 <div class="bg-slate-700/50 rounded-lg p-4 mt-3 font-mono text-center">
-                    E(rolls before a 1) = 1 / (1/6) = 6 rolls
+                    E(T) = 1 / (1/6) = 6 rolls, including the first 1<br>
+                    E(T − 1) = 5 safe rolls before the first 1
                 </div>
                 <p class="mt-3">
-                    On average, you can expect to survive about 6 rolls before seeing a 1. This means the "typical" game ends somewhere between rolls 5 and 7. Of course, individual results vary widely. Some games will end on roll 1, while others will go all the way to 10. But the average clusters around 6, which is why reaching rolls 8, 9, or 10 feels so tense.
+                    The actual game stops at a 1 or at ten safe rolls, whichever comes first. Its number of rolls is min(T, 10). Roll 1 is always taken; roll 2 is taken only if roll 1 was safe; and so on. Adding those probabilities gives the expected length of a completed attempt:
                 </p>
+                <div class="bg-slate-700/50 rounded-lg p-4 mt-3 font-mono text-center">
+                    E(min(T, 10)) = 1 + q + ⋯ + q<sup>9</sup><br>
+                    = (1 − q<sup>10</sup>) / (1 − q) ≈ 5.03 rolls
+                </div>
                 <p class="mt-3">
-                    Over a large number of games, your personal win rate should converge toward 16.15%. If you have played 50 games and won 12, your 24% win rate is higher than expected but well within normal variance. After 500 games, your rate will likely be much closer to the theoretical value. This convergence toward expected values over time is known as the law of large numbers, and it is one of the foundational principles of probability theory.
+                    An expectation is an average over repetitions, not the most likely outcome or a promised stopping point. Ending on roll 1 is more likely than ending on any particular later roll below the cap. Attempts abandoned before an outcome are not completed trials and should not be mixed into a study of completed-game lengths.
                 </p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Real-World Probability Comparisons</h2>
+                <h2 class="text-2xl font-bold text-white mb-3">Compare Events with Clear Assumptions</h2>
                 <p>
-                    To put the 16.15% win rate in perspective, here are some real-world events with similar or related probabilities:
+                    Probability comparisons work best when the experiment and the winning event are explicit:
                 </p>
                 <ul class="list-disc ml-6 mt-3 space-y-2">
-                    <li><strong class="text-white">Flipping heads 3 times in a row:</strong> 12.5% chance (slightly harder than winning our game).</li>
-                    <li><strong class="text-white">Drawing an ace from a shuffled deck:</strong> 7.7% chance (about half as likely as winning).</li>
-                    <li><strong class="text-white">Rolling a 6 on two dice simultaneously:</strong> 2.78% chance (close to a two-game win streak).</li>
-                    <li><strong class="text-white">Being dealt a pair in poker (5-card):</strong> 42.3% chance (much easier than our game).</li>
-                    <li><strong class="text-white">A MLB batter getting a hit:</strong> About 25% chance on any at-bat (easier than surviving 10 rolls).</li>
-                    <li><strong class="text-white">Rain on any given day in London:</strong> About 40% (comparable to surviving 5 rolls).</li>
+                    <li><strong class="text-white">Three heads in three independent fair-coin flips:</strong> (1/2)<sup>3</sup> = 12.5%.</li>
+                    <li><strong class="text-white">One ace on a uniformly random draw from a 52-card deck:</strong> 4/52 = 1/13 ≈ 7.69%.</li>
+                    <li><strong class="text-white">Both of two independent fair dice show 6:</strong> (1/6)<sup>2</sup> = 1/36 ≈ 2.78%.</li>
+                    <li><strong class="text-white">The sum of two independent fair dice is 6:</strong> 5/36 ≈ 13.89%. This is a different event from both dice showing 6.</li>
                 </ul>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold text-white mb-3">Variance and Sample Size</h2>
                 <p>
-                    If you play 10 games and win 0, does that mean the game is broken? Not at all. The probability of losing all 10 games is:
+                    Let X count wins in ten independent completed games, and keep p = (5/6)<sup>10</sup> unrounded. X has a binomial distribution: P(X = k) = C(10, k)p<sup>k</sup>(1 − p)<sup>10−k</sup>, where C(10, k) counts the ways to place k wins among ten games.
                 </p>
                 <div class="bg-slate-700/50 rounded-lg p-4 mt-3 font-mono text-center">
-                    P(0 wins in 10 games) = (1 - 0.1615)^10 ≈ 16.8%
+                    P(X = 0) = (1 − p)<sup>10</sup> ≈ 17.18%<br>
+                    P(X ≥ 4) = Σ from k = 4 to 10 of C(10, k)p<sup>k</sup>(1 − p)<sup>10−k</sup> ≈ 6.32%
                 </div>
                 <p class="mt-3">
-                    Roughly one in six players who play exactly 10 games will not win any of them. That is a surprisingly common outcome. On the other end, winning 4 or more out of 10 is also possible (around 5.5% chance). Short sessions produce wildly different results, which is part of what makes the game exciting. The more you play, the more your results will reflect the true underlying probability.
+                    Thus zero wins in ten is compatible with the fair-die model; by itself it does not establish a fault. Four or more wins also occur in the model. Neither outcome proves that the implementation is fair. To compare observations meaningfully, decide the sample size in advance, record every completed attempt, and do not select only successful sessions or leaderboard entries.
+                </p>
+                <p class="mt-3">
+                    For example, one recorded win out of five is a 20% observed rate. Another five games could move that rate either toward or away from 16.15%. The law of large numbers describes long-run convergence under the model, not a guarantee that each additional game brings the rate closer. There is no need to keep playing to "correct" a short session.
                 </p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Learn More</h2>
+                <h2 class="text-2xl font-bold text-white mb-3">References and Further Reading</h2>
                 <p>
-                    Interested in probability beyond this game? The concepts demonstrated here (compound probability, independence, expected value, the law of large numbers, and the gambler's fallacy) appear throughout statistics, finance, science, and everyday decision-making. Check out our <a href="dice-facts.html" class="text-purple-400 hover:underline">Dice Facts</a> page for more about the fascinating history of dice, or head to the <a href="how-to-play.html" class="text-purple-400 hover:underline">How to Play</a> guide to learn more about game features.
+                    The calculations here apply standard probability definitions to this game's ten-roll rule. For background, see the <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda366i.htm" class="text-purple-400 hover:underline">NIST/SEMATECH handbook on the binomial distribution</a> and <a href="https://mathworld.wolfram.com/GeometricDistribution.html" class="text-purple-400 hover:underline">Wolfram MathWorld on the geometric distribution</a>. These are mathematical references, not endorsements or audits of this game.
+                </p>
+                <p class="mt-3">
+                    Continue with <a href="dice-facts.html" class="text-purple-400 hover:underline">Dice Facts</a> for sample-space examples, or <a href="how-to-play.html" class="text-purple-400 hover:underline">How to Play</a> for the controls and statistics.
                 </p>
             </section>
         </div>
 
         <div class="mt-8 text-center">
             <a href="index.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl">
-                Test Your Luck
+                Return to the Game
             </a>
         </div>
+        </main>
 
         <!-- Footer Navigation -->
-        <div class="mt-12 text-center text-sm text-gray-500 space-y-2">
+        <footer class="mt-12 text-center text-sm text-gray-500 space-y-2">
             <div class="space-x-4">
                 <a href="index.html" class="hover:text-purple-400">Play</a>
                 <span>·</span>
@@ -220,7 +251,7 @@
                 <span>·</span>
                 <a href="contact.html" class="hover:text-purple-400">Contact</a>
             </div>
-        </div>
+        </footer>
     </div>
 </body>
 </html>

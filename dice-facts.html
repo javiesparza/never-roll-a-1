@@ -3,156 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dice Facts - Never Roll a 1 | History, Types & Fascinating Trivia</title>
-    <meta name="description" content="Discover the fascinating history of dice, from ancient Mesopotamia to modern gaming. Learn about dice types, manufacturing, famous games, and mathematical properties.">
-
-    <!-- Open Graph -->
+    <title>Dice Facts - Never Roll a 1 | Shapes, Sums and Randomness</title>
+    <meta name="description" content="Explore dice shapes, why two-dice sums are not equally likely, and the difference between collecting every face and seeing a first repeat.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://neverrollone.com/dice-facts.html">
-    <meta property="og:title" content="Dice Facts - History, Types & Fascinating Trivia">
-    <meta property="og:description" content="From ancient Mesopotamia to modern tabletop gaming, explore the surprising history and science of dice.">
+    <meta property="og:title" content="Dice Facts - Shapes, Sums and Randomness">
+    <meta property="og:description" content="Understand dice with worked examples of sample spaces, repeated faces, and fair-die assumptions.">
     <meta property="og:image" content="https://neverrollone.com/preview.png">
-
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://neverrollone.com/dice-facts.html">
-    <meta property="twitter:title" content="Dice Facts - History, Types & Fascinating Trivia">
-    <meta property="twitter:description" content="From ancient Mesopotamia to modern tabletop gaming, explore the surprising history and science of dice.">
+    <meta property="twitter:title" content="Dice Facts - Shapes, Sums and Randomness">
+    <meta property="twitter:description" content="Understand dice with worked examples of sample spaces, repeated faces, and fair-die assumptions.">
     <meta property="twitter:image" content="https://neverrollone.com/preview.png">
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="canonical" href="https://neverrollone.com/dice-facts.html">
+    <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
     <div class="max-w-4xl mx-auto p-8">
-        <div class="mb-8">
-            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
-        </div>
+        <nav aria-label="Main navigation" class="site-nav mb-8 flex flex-wrap gap-4">
+            <a href="index.html">Play</a>
+            <a href="how-to-play.html">How to Play</a>
+            <a href="probability-guide.html">Probability Guide</a>
+            <a href="dice-facts.html" aria-current="page">Dice Facts</a>
+            <a href="faq.html">FAQ</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
 
-        <h1 class="text-4xl font-bold mb-8">Dice Facts</h1>
+        <main id="main-content">
+            <h1 class="text-4xl font-bold mb-8">Dice Facts: Shapes, Sums and Randomness</h1>
+            <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-8 text-gray-300">
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">A Die Is a Small Sample Space</h2>
+                    <p>
+                        A six-sided die gives a compact way to study chance: its numbered outcomes are {1, 2, 3, 4, 5, 6}. In the fair-die model, each outcome has probability 1/6. Never Roll a 1 groups five outcomes together as "safe" and the remaining outcome, 1, as "stop." That grouping, rather than the size of the number rolled, explains its 5/6 safe-roll probability.
+                    </p>
+                    <p class="mt-3">
+                        A 6 does not advance you further than a 2 in this game. Both complete one safe roll. The game is free and non-wagering, with no bets or cash prizes; these examples are about understanding probability, not choosing wagers.
+                    </p>
+                </section>
 
-        <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-8 text-gray-300">
-
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">A Brief History of Dice</h2>
-                <p>
-                    Dice are among the oldest gaming instruments known to humanity, with a history stretching back at least 5,000 years. The earliest known dice were discovered in archaeological sites in present-day Iran and Iraq, dating to approximately 3000 BCE. These ancient dice were often made from the ankle bones of sheep or other hoofed animals, known as astragali or knucklebones. The four-sided shape of these bones made them natural randomizers, landing on one of four distinct faces when thrown.
-                </p>
-                <p class="mt-3">
-                    The six-sided cube dice we recognize today appeared in ancient Mesopotamia alongside the development of board games like the Royal Game of Ur, one of the oldest known board games. Egyptian tombs have yielded dice dating to around 2000 BCE, and excavations at Mohenjo-daro in the Indus Valley have uncovered cubical dice from a similar era. By the time of the Roman Empire, dice games were widespread across the Mediterranean world. Roman soldiers were famously avid dice players, and the Latin phrase "alea iacta est" (the die is cast), attributed to Julius Caesar at the Rubicon, speaks to how deeply embedded dice were in the culture.
-                </p>
-                <p class="mt-3">
-                    Throughout the Middle Ages, dice games remained popular across Europe despite periodic bans by religious authorities who associated gambling with vice. The Renaissance saw dice become tools of mathematical inquiry. Italian mathematicians Gerolamo Cardano, Galileo Galilei, and later Blaise Pascal all studied dice to develop the foundations of modern probability theory. In many ways, the humble die is the grandfather of the entire field of statistics.
-                </p>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">How Dice Are Made</h2>
-                <p>
-                    Modern dice manufacturing is a precision process. Standard dice used in board games are typically injection-molded from plastic, with the pips (dots) either painted on or created by removing material and filling the cavity with paint. This removal of material means that, strictly speaking, a 6-face is very slightly lighter than a 1-face because more material has been removed. However, this difference is negligible for casual gaming.
-                </p>
-                <p class="mt-3">
-                    Casino-grade dice, also called precision dice, are held to much stricter standards. These dice are typically machined from cellulose acetate to tolerances of 1/10,000 of an inch. The pips are drilled out and filled with paint of the same density as the removed material, ensuring that no face is heavier than another. Each edge is sharp rather than rounded, and the dice are transparent so that no hidden weights can be inserted. Las Vegas casinos replace their dice every eight hours to prevent wear from affecting randomness.
-                </p>
-                <p class="mt-3">
-                    The arrangement of numbers on a standard Western die follows a specific convention: opposite faces always sum to 7 (1 opposite 6, 2 opposite 5, 3 opposite 4). This has been the standard since at least ancient Rome. However, even with this constraint, there are two mirror-image orientations possible, creating "right-handed" and "left-handed" dice. Western dice typically use the right-handed configuration, where the 1-2-3 faces share a corner and go counterclockwise. Chinese and Japanese dice often use the left-handed arrangement.
-                </p>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Types of Dice</h2>
-                <p>
-                    While the six-sided cube (d6) is the most recognizable die, the world of gaming uses many other shapes. These are based on the Platonic solids and other symmetrical polyhedra:
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold text-purple-400 mb-1">d4 - Tetrahedron</h3>
-                        <p class="text-sm">Four triangular faces. The caltrop-shaped die that always lands with a point up. Results are typically read from the base edge or the apex. Commonly used in tabletop RPGs for small damage values like dagger attacks.</p>
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">Dice Notation and Shapes</h2>
+                    <p>
+                        In dice notation, d6 means a six-sided die, and 2d6 means two such dice. When a rule asks for their total, add the results; do not treat the notation as a single twelve-sided die. The table lists common geometric designs. The number of faces alone does not establish whether a particular physical object rolls fairly.
+                    </p>
+                    <div class="overflow-x-auto mt-4">
+                        <table class="w-full text-sm">
+                            <caption class="mb-3">Common dice designs and their face geometry</caption>
+                            <thead>
+                                <tr class="text-left border-b border-slate-600">
+                                    <th scope="col" class="py-2 px-3">Notation</th>
+                                    <th scope="col" class="py-2 px-3">Shape</th>
+                                    <th scope="col" class="py-2 px-3">Faces</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><th scope="row" class="py-2 px-3">d4</th><td class="py-2 px-3">Tetrahedron</td><td class="py-2 px-3">4 triangles</td></tr>
+                                <tr><th scope="row" class="py-2 px-3">d6</th><td class="py-2 px-3">Cube</td><td class="py-2 px-3">6 squares</td></tr>
+                                <tr><th scope="row" class="py-2 px-3">d8</th><td class="py-2 px-3">Octahedron</td><td class="py-2 px-3">8 triangles</td></tr>
+                                <tr><th scope="row" class="py-2 px-3">d10</th><td class="py-2 px-3">Pentagonal trapezohedron</td><td class="py-2 px-3">10 kites</td></tr>
+                                <tr><th scope="row" class="py-2 px-3">d12</th><td class="py-2 px-3">Dodecahedron</td><td class="py-2 px-3">12 pentagons</td></tr>
+                                <tr><th scope="row" class="py-2 px-3">d20</th><td class="py-2 px-3">Icosahedron</td><td class="py-2 px-3">20 triangles</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold text-purple-400 mb-1">d6 - Cube</h3>
-                        <p class="text-sm">Six square faces. The most common and widely recognized die. Used in countless board games from Monopoly to Yahtzee, as well as in Never Roll a 1. Its familiarity makes it the default die for most people worldwide.</p>
-                    </div>
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold text-purple-400 mb-1">d8 - Octahedron</h3>
-                        <p class="text-sm">Eight triangular faces forming a diamond-like shape. Popular in Dungeons & Dragons for medium weapon damage. Two square pyramids fused at their bases create this elegant shape.</p>
-                    </div>
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold text-purple-400 mb-1">d10 - Pentagonal Trapezohedron</h3>
-                        <p class="text-sm">Ten kite-shaped faces. Not a Platonic solid but widely used. Two d10s can simulate a d100 (percentile dice), making it essential for games that use percentage-based systems.</p>
-                    </div>
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold text-purple-400 mb-1">d12 - Dodecahedron</h3>
-                        <p class="text-sm">Twelve pentagonal faces. Often considered the most aesthetically pleasing die. Used for heavy weapon damage in RPGs, such as greataxe attacks. The ancient Greeks associated this shape with the universe itself.</p>
-                    </div>
-                    <div class="bg-slate-700/50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold text-purple-400 mb-1">d20 - Icosahedron</h3>
-                        <p class="text-sm">Twenty triangular faces. The iconic die of Dungeons & Dragons, used for attack rolls, saving throws, and skill checks. Rolling a natural 20 (critical hit) or a 1 (critical fail) has become part of gaming culture far beyond the tabletop.</p>
-                    </div>
-                </div>
-                <p class="mt-4">
-                    Beyond these standard shapes, specialty dice exist in many unusual forms: d30s, d100s (a dimpled sphere called a Zocchihedron), and novelty dice with dozens or even hundreds of faces. Some games use non-numeric dice with symbols, colors, or custom markings.
-                </p>
-            </section>
+                    <p class="mt-3">
+                        The regular tetrahedron, cube, octahedron, dodecahedron, and icosahedron are the five Platonic solids: convex polyhedra with congruent regular-polygon faces and the same arrangement at every vertex. The ten-faced trapezohedron is not a Platonic solid; its kite-shaped faces are not regular polygons.
+                    </p>
+                    <p class="mt-3">
+                        Two independent fair d10s labeled 0–9 can generate a uniform pair of decimal digits. Designate one as the tens digit and one as the units digit before rolling. There are 100 equally likely ordered pairs, from 00 through 99. A game can instead interpret 00 as 100 to obtain results 1–100, but that convention needs to be stated.
+                    </p>
+                </section>
 
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Famous Dice Games Around the World</h2>
-                <ul class="space-y-4 mt-3">
-                    <li>
-                        <strong class="text-white">Craps:</strong> The most well-known casino dice game, played on a specially designed table. Players bet on the outcome of two six-sided dice. The game originated from the English game Hazard and was brought to New Orleans in the early 1800s. Craps has some of the best odds in the casino when played correctly, with the pass line bet carrying a house edge of just 1.41%.
-                    </li>
-                    <li>
-                        <strong class="text-white">Yahtzee:</strong> Created in 1956 by a Canadian couple who originally called it "The Yacht Game." Players roll five dice up to three times per turn, trying to form specific combinations (full house, straight, three of a kind, etc.). Hasbro has sold over 50 million copies worldwide, making it one of the best-selling dice games in history.
-                    </li>
-                    <li>
-                        <strong class="text-white">Liar's Dice:</strong> A bluffing game where players roll dice hidden under cups and make increasingly bold claims about the total dice showing a particular value across all players. Featured prominently in the film "Pirates of the Caribbean: Dead Man's Chest," this game rewards deception and probability estimation in equal measure.
-                    </li>
-                    <li>
-                        <strong class="text-white">Sic Bo:</strong> An ancient Chinese dice game using three dice, popular in Asian casinos. Players bet on the total, specific combinations, or individual numbers. The game has been played in China for centuries and remains a staple in Macau casinos today.
-                    </li>
-                    <li>
-                        <strong class="text-white">Farkle (10,000):</strong> A push-your-luck game where players roll six dice and score points for specific combinations. After each scoring roll, the player decides whether to bank their points or risk them by rolling again. A roll with no scoring dice (a "farkle") loses all unbanked points for that turn, creating exciting risk-reward decisions.
-                    </li>
-                </ul>
-            </section>
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">Why Two Dice Do Not Give Uniform Totals</h2>
+                    <p>
+                        Imagine one red die and one blue die, rolled independently and fairly. There are 6 × 6 = 36 equally likely ordered pairs. Red 2 with blue 5 is distinct from red 5 with blue 2, even though both total 7. Counting these pairs gives the distribution below.
+                    </p>
+                    <div class="overflow-x-auto mt-4">
+                        <table id="dice-sums" class="w-full text-sm">
+                            <caption class="mb-3">Totals of two independent fair six-sided dice; percentages rounded</caption>
+                            <thead>
+                                <tr class="text-left border-b border-slate-600">
+                                    <th scope="col" class="py-2 px-3">Total</th>
+                                    <th scope="col" class="py-2 px-3">Ordered Pairs</th>
+                                    <th scope="col" class="py-2 px-3">Probability</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-mono">
+                                <tr><td class="py-2 px-3">2</td><td class="py-2 px-3">1</td><td class="py-2 px-3">1/36 ≈ 2.78%</td></tr>
+                                <tr><td class="py-2 px-3">3</td><td class="py-2 px-3">2</td><td class="py-2 px-3">2/36 ≈ 5.56%</td></tr>
+                                <tr><td class="py-2 px-3">4</td><td class="py-2 px-3">3</td><td class="py-2 px-3">3/36 ≈ 8.33%</td></tr>
+                                <tr><td class="py-2 px-3">5</td><td class="py-2 px-3">4</td><td class="py-2 px-3">4/36 ≈ 11.11%</td></tr>
+                                <tr><td class="py-2 px-3">6</td><td class="py-2 px-3">5</td><td class="py-2 px-3">5/36 ≈ 13.89%</td></tr>
+                                <tr><td class="py-2 px-3">7</td><td class="py-2 px-3">6</td><td class="py-2 px-3">6/36 ≈ 16.67%</td></tr>
+                                <tr><td class="py-2 px-3">8</td><td class="py-2 px-3">5</td><td class="py-2 px-3">5/36 ≈ 13.89%</td></tr>
+                                <tr><td class="py-2 px-3">9</td><td class="py-2 px-3">4</td><td class="py-2 px-3">4/36 ≈ 11.11%</td></tr>
+                                <tr><td class="py-2 px-3">10</td><td class="py-2 px-3">3</td><td class="py-2 px-3">3/36 ≈ 8.33%</td></tr>
+                                <tr><td class="py-2 px-3">11</td><td class="py-2 px-3">2</td><td class="py-2 px-3">2/36 ≈ 5.56%</td></tr>
+                                <tr><td class="py-2 px-3">12</td><td class="py-2 px-3">1</td><td class="py-2 px-3">1/36 ≈ 2.78%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-3">
+                        A total of 7 has six contributing pairs, while 12 has only (6, 6). This makes 7 six times as likely as 12. A fair d12, by contrast, has twelve individual outcomes with equal probability and can show 1, which a sum of 2d6 cannot.
+                    </p>
+                    <p class="mt-3">
+                        Try listing the pairs for a total of 6: (1, 5), (2, 4), (3, 3), (4, 2), and (5, 1). This also resolves an ambiguous phrase like "roll a six on two dice": a total of 6 has probability 5/36; two faces both showing 6 have probability 1/36.
+                    </p>
+                </section>
 
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Dice in Mathematics</h2>
-                <p>
-                    Dice have played a pivotal role in the development of probability theory and continue to serve as teaching tools in mathematics classrooms around the world. The study of dice outcomes is often the first introduction students have to concepts like sample spaces, expected value, and the difference between theoretical and experimental probability.
-                </p>
-                <p class="mt-3">
-                    One of the most famous results in dice mathematics is the "birthday problem" analog: if you roll a die repeatedly, how many rolls until you are likely to see a repeat? The expected number of rolls to see all six faces at least once is:
-                </p>
-                <div class="bg-slate-700/50 rounded-lg p-4 mt-3 font-mono text-center">
-                    6/6 + 6/5 + 6/4 + 6/3 + 6/2 + 6/1 = 14.7 rolls
-                </div>
-                <p class="mt-3">
-                    This "coupon collector's problem" has applications in areas ranging from genetics to marketing. The mathematics that began with analyzing dice throws now underpins fields like quantum mechanics, financial modeling, and machine learning. Want to see more of the math in action? Our <a href="probability-guide.html" class="text-purple-400 hover:underline">Probability Guide</a> explores the specific formulas behind Never Roll a 1.
-                </p>
-            </section>
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">Collecting Every Face Is Not the First Repeat</h2>
+                    <p>
+                        Consider the sequence 2, 5, 2, 1, 6, 3, 4. Its first repeat arrives on roll 3, but all six faces have appeared only after roll 7. These are different stopping rules and need different calculations. Here we allow rolling beyond the game's ten-roll cap.
+                    </p>
+                    <h3 class="text-lg font-bold text-purple-400 mt-4 mb-1">Collect all six: the coupon collector</h3>
+                    <p>
+                        Once you have seen k distinct faces, the next independent fair roll has probability (6 − k)/6 of showing something new. The average wait for that next new face, including the roll that produces it, is 6/(6 − k). Add the six stages:
+                    </p>
+                    <div class="bg-slate-700/50 rounded-lg p-4 mt-3 font-mono text-center">
+                        E(rolls to collect all six) = 6/6 + 6/5 + 6/4 + 6/3 + 6/2 + 6/1 = 14.7
+                    </div>
+                    <p class="mt-3">
+                        The first face takes one roll. After five different faces have appeared, the last missing face alone takes six more rolls on average. That last stage explains why collecting every face takes much longer than six rolls on average. The value 14.7 is an exact expectation under the model, not a guarantee of finishing by roll 15.
+                    </p>
+                    <h3 class="text-lg font-bold text-purple-400 mt-4 mb-1">See any repeat: a collision problem</h3>
+                    <p>
+                        For the first three rolls to be different, the first can be anything, the second must avoid one face, and the third must avoid two. Thus P(no repeat in three rolls) = 1 × 5/6 × 4/6 = 5/9. The chance of at least one repeat by roll 3 is 4/9 ≈ 44.44%. By roll 4 it is 1 − (1 × 5/6 × 4/6 × 3/6) = 13/18 ≈ 72.22%.
+                    </p>
+                    <p class="mt-3">
+                        A repeat must occur by roll 7 because only six different faces exist. Collecting all faces has no such fixed deadline: a sequence may keep missing one face. The familiar birthday-collision question resembles the first-repeat problem, not the coupon collector.
+                    </p>
+                </section>
 
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Dice Superstitions</h2>
-                <p>
-                    Across cultures and centuries, dice players have developed a rich tradition of superstitions. Craps players often believe in "hot" and "cold" streaks and may switch dice or change shooters to "reset" the luck. Some players blow on dice before rolling for good luck, a tradition so widespread it has become a Hollywood cliche. In many Asian cultures, the number 4 is considered unlucky (the word sounds similar to "death" in Chinese and Japanese), making a roll of 4 undesirable in social gambling.
-                </p>
-                <p class="mt-3">
-                    Of course, with a fair die, no ritual can change the odds. Every roll is an independent event governed by physics and probability, not by karma or momentum. But the persistence of these superstitions speaks to a deep human tendency to find patterns in randomness, a cognitive bias that psychologists call apophenia. Understanding this tendency is part of what makes playing probability games so educational. For more on this topic, see the gambler's fallacy section in our <a href="probability-guide.html" class="text-purple-400 hover:underline">Probability Guide</a>.
-                </p>
-            </section>
-        </div>
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">Fairness and Independence Are Separate Assumptions</h2>
+                    <p>
+                        "Fair" means the six outcomes have equal probabilities. "Independent" means knowing earlier results does not change the distribution of later ones. Equal-looking totals do not establish independence. For example, a device that chooses one initial face uniformly and then cycles through 1–6 would show balanced counts across complete cycles, but its next result would be predictable from the previous result.
+                    </p>
+                    <p class="mt-3">
+                        A physical die's shape, balance, surface, and rolling method are relevant to a physical experiment. A digital die depends on how software generates and maps numbers. Its animation is a display, not evidence that the underlying sequence is fair. This page does not certify either a physical die or this site's implementation.
+                    </p>
+                    <p class="mt-3">
+                        To explore observed results, choose a fixed number of rolls in advance and record them all in order. Compare the face counts as well as consecutive pairs. In 60 fair independent rolls, the expected count for each face is 10, but seeing exactly ten of every face is not required. A short sample can illustrate variation; it cannot by itself prove fairness or detect every kind of dependence.
+                    </p>
+                </section>
 
-        <div class="mt-8 text-center">
-            <a href="index.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl">
-                Roll the Dice
-            </a>
-        </div>
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">A Conditional-Probability Check</h2>
+                    <p>
+                        Suppose you roll a fair die and are told only that its result is not 1. The five remaining faces are equally likely, so the probability it is 6 is now 1/5. This is information about a roll that already happened. It does <em>not</em> make a 6 more likely on the next independent roll, where its probability is still 1/6.
+                    </p>
+                    <p class="mt-3">
+                        In Never Roll a 1, reaching 8/10 similarly tells you that eight earlier rolls were safe. Your remaining chance is (5/6)<sup>2</sup> ≈ 69.44%, because only two rolls remain. It does not mean a 1 is "due." See the <a href="probability-guide.html" class="text-purple-400 hover:underline">Probability Guide</a> for the full distinction between survival from the start and the chance of finishing from your current position.
+                    </p>
+                </section>
 
-        <!-- Footer Navigation -->
-        <div class="mt-12 text-center text-sm text-gray-500 space-y-2">
+                <section>
+                    <h2 class="text-2xl font-bold text-white mb-3">References and Further Reading</h2>
+                    <p>For mathematical background on the definitions used here:</p>
+                    <ul class="list-disc ml-6 mt-3 space-y-2">
+                        <li><a href="https://mathworld.wolfram.com/PlatonicSolid.html" class="text-purple-400 hover:underline">Wolfram MathWorld: Platonic Solid</a> — the five regular convex polyhedra.</li>
+                        <li><a href="https://mathworld.wolfram.com/CouponCollectorsProblem.html" class="text-purple-400 hover:underline">Wolfram MathWorld: Coupon Collector's Problem</a> — waiting to observe every possible category.</li>
+                        <li><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda366i.htm" class="text-purple-400 hover:underline">NIST/SEMATECH: Binomial Distribution</a> — counts of successes in a fixed number of independent trials.</li>
+                    </ul>
+                    <p class="mt-3">
+                        The worked dice examples are derived from the stated fair, independent model. These references provide background, not an endorsement or review of the game. For controls and local records, read <a href="how-to-play.html" class="text-purple-400 hover:underline">How to Play</a>.
+                    </p>
+                </section>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="index.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl">Return to the Game</a>
+            </div>
+        </main>
+
+        <footer class="mt-12 text-center text-sm text-gray-500 space-y-2">
             <div class="space-x-4">
                 <a href="index.html" class="hover:text-purple-400">Play</a>
                 <span>·</span>
@@ -173,7 +201,7 @@
                 <span>·</span>
                 <a href="contact.html" class="hover:text-purple-400">Contact</a>
             </div>
-        </div>
+        </footer>
     </div>
 </body>
 </html>

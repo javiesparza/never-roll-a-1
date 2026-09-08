@@ -1,0 +1,5 @@
+node_modules/
+dist/
+assets/styles.css
+.firebase/
+*-debug.log

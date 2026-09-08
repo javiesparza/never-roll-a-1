@@ -1,0 +1,22 @@
+{
+  "name": "never-roll-a-1",
+  "version": "1.0.0",
+  "description": "A free dice game exploring independent events and compound probability.",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./styles/tailwind.css -o ./assets/styles.css --minify",
+    "build": "npm run build:css && mkdir -p dist/assets && cp *.html robots.txt sitemap.xml ads.txt dist/ && cp assets/styles.css dist/assets/ && cp preview.png dist/",
+    "test": "node --test tests/*.test.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/javiesparza/never-roll-a-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "devDependencies": {
+    "tailwindcss": "3.4.19"
+  }
+}

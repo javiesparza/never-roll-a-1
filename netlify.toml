@@ -1,12 +1,28 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
 [[redirects]]
-  from = "http://*"
-  to = "https://:splat"
+  from = "https://www.neverrollone.com/*"
+  to = "https://neverrollone.com/:splat"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[build.processing.html]
+  pretty_urls = false
 
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "no-referrer-when-downgrade"
+    Referrer-Policy = "strict-origin-when-cross-origin"

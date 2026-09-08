@@ -1,0 +1,39 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "dailyScores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "date", "order": "ASCENDING" },
+        { "fieldPath": "streak", "order": "DESCENDING" },
+        { "fieldPath": "attempts", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "dailyScores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "date", "order": "ASCENDING" },
+        { "fieldPath": "streak", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "dailyScores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "date", "order": "ASCENDING" },
+        { "fieldPath": "streak", "order": "ASCENDING" },
+        { "fieldPath": "attempts", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "allTimeScores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "streak", "order": "DESCENDING" },
+        { "fieldPath": "attempts", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

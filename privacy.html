@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Never Roll a 1</title>
     <meta name="description" content="Privacy Policy for Never Roll a 1. Learn how we handle your data, cookies, and third-party services in our free dice probability game.">
+    <link rel="canonical" href="https://neverrollone.com/privacy.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -13,59 +14,91 @@
     <meta property="og:description" content="How Never Roll a 1 handles your data, cookies, and third-party services.">
     <meta property="og:image" content="https://neverrollone.com/preview.png">
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6398871668173615" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
     <div class="max-w-4xl mx-auto p-8">
-        <div class="mb-8">
-            <a href="index.html" class="text-purple-400 hover:text-purple-300">← Back to Game</a>
-        </div>
+        <header class="mb-8">
+            <nav aria-label="Primary" class="flex flex-wrap gap-4 text-purple-300">
+                <a href="index.html" class="hover:underline">Play</a>
+                <a href="how-to-play.html" class="hover:underline">How to Play</a>
+                <a href="about.html" class="hover:underline">About</a>
+                <a href="faq.html" class="hover:underline">FAQ</a>
+                <a href="privacy.html" aria-current="page" class="hover:underline">Privacy</a>
+                <a href="terms.html" class="hover:underline">Terms</a>
+                <a href="contact.html" class="hover:underline">Contact</a>
+            </nav>
+        </header>
 
+        <main>
         <h1 class="text-4xl font-bold mb-8">Privacy Policy</h1>
 
         <div class="bg-slate-800/70 backdrop-blur-xl rounded-2xl p-8 space-y-6 text-gray-300">
-            <p class="text-sm text-gray-400">Last updated: March 2026</p>
+            <p class="text-sm text-gray-400">Last updated: September 8, 2026</p>
 
             <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Information We Collect</h2>
-                <p>Never Roll a 1 is a simple browser-based game. We collect minimal information:</p>
+                <h2 class="text-2xl font-bold text-white mb-3">The Project and This Policy</h2>
+                <p>Never Roll a 1 is an independent browser game maintained through <a href="https://github.com/javiesparza/never-roll-a-1" class="text-purple-400 hover:underline">javiesparza/never-roll-a-1 on GitHub</a>. This identifies the public project and maintainer account, not a verified legal operator identity. Privacy questions and deletion requests can be sent through the <a href="contact.html" class="text-purple-400 hover:underline">contact page</a>.</p>
+                <p class="mt-3">You can play without signing in. Local game statistics and optional cloud account and leaderboard records are different kinds of data. Signing in enables automatic score submission on wins once a leaderboard display name is set; you do not separately opt in for each win.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">Browser Storage</h2>
                 <ul class="list-disc ml-6 mt-2 space-y-2">
-                    <li>Game statistics stored locally in your browser (scores, streaks)</li>
-                    <li>Anonymous analytics data (page views, game sessions)</li>
+                    <li><strong>Local game statistics:</strong> localStorage stores wins, attempts, streaks, best streaks, and the daily date marker so statistics can survive page refreshes in the same browser. These local statistics do not sync between devices.</li>
+                    <li><strong>Authentication session:</strong> Firebase Authentication uses browser storage to maintain sign-in state. Google sign-in may also use cookies or other storage under Google's policies.</li>
+                    <li>Browser storage can be unavailable or cleared by your browser, private browsing settings, or you. Keeping local stats is not a backup guarantee.</li>
                 </ul>
             </section>
 
             <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Cookies</h2>
-                <p>We use cookies and local storage to:</p>
+                <h2 class="text-2xl font-bold text-white mb-3">Google Sign-In and Firebase Records</h2>
+                <p>Firebase Authentication handles Google sign-in, including account profile information (such as name and profile image), email address, provider identifiers, the Firebase user ID (UID), and authentication session information. The application does not receive your Google password.</p>
                 <ul class="list-disc ml-6 mt-2 space-y-2">
-                    <li>Save your game progress and statistics</li>
-                    <li>Deliver advertisements through Google AdSense</li>
-                    <li>Analyze site traffic and usage</li>
+                    <li><strong>Firestore <code>users</code>:</strong> a document keyed by the account UID stores the chosen <code>displayName</code> and <code>createdAt</code> timestamp for the leaderboard profile. The repository's access rules restrict browser reads of this profile record to its signed-in owner; the name is also included in public score records.</li>
+                    <li><strong>Firestore <code>dailyScores</code> and <code>allTimeScores</code>:</strong> score records contain <code>userId</code>, <code>displayName</code>, <code>streak</code>, <code>attempts</code>, and <code>timestamp</code>. Daily records also contain <code>date</code>, using a UTC day.</li>
+                    <li><strong>Moderation records:</strong> the manual abuse-handling procedure uses administrator-managed <code>blockedUsers</code> records keyed by UID to prevent further profile and score writes. Repository rules deny browser access to these records. They are not a public leaderboard field or an automated content-moderation system.</li>
+                    <li>The UID is a pseudonymous account identifier linked to authentication, <strong>not anonymous data</strong>. Although score records do not include your email address or Google profile image, Firebase Authentication processes those account details.</li>
+                </ul>
+                <p class="mt-3">These services support sign-in, persistent display names, and score comparison. A win while signed in with a display name automatically attempts to save a qualifying personal-best score. Internet or service failures can prevent saving.</p>
+                <p class="mt-3">The repository includes access rules, but their deployment and the live Firebase configuration have not been verified. Publishing the website alone does not deploy those rules. These descriptions of intended restrictions are not a certification of live access controls.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">What Is Public</h2>
+                <p>The daily and all-time score collections are publicly readable, including account-linked <code>userId</code> values, names, results, and timestamps. This is broader than the top entries currently displayed in the leaderboard. Others may copy public records. Choose a display name that does not reveal personal information, and do not submit someone else's private information.</p>
+                <p class="mt-3">Midnight UTC starts a new daily view and resets daily wins and attempts, while an active win streak carries over. It does not delete previous daily records from Firestore. All-time records are also separate from local browser statistics.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-3">Service Providers and Hosting</h2>
+                <ul class="list-disc ml-6 mt-2 space-y-2">
+                    <li><strong>Google/Firebase:</strong> the game loads Firebase resources and contacts its services for authentication and leaderboard functionality. Those requests may occur when viewing the game or public leaderboard, even without signing in. See <a href="https://firebase.google.com/support/privacy" class="text-purple-400 hover:underline">Firebase Privacy and Security</a> and <a href="https://policies.google.com/privacy" class="text-purple-400 hover:underline">Google's Privacy Policy</a>.</li>
+                    <li><strong>Hosting:</strong> the hosting provider may process request information such as IP addresses, requested URLs, browser information, and timestamps to deliver and protect the site. This policy does not assert a verified log-retention period.</li>
+                    <li><strong>Contact:</strong> if you email the maintainer, your address, message, and any attachments are used to handle that request. GitHub issues are public and subject to GitHub's policies; do not use them to share private account details.</li>
                 </ul>
             </section>
 
             <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Third-Party Services</h2>
-                <p>We use the following third-party services:</p>
+                <h2 class="text-2xl font-bold text-white mb-3">Advertising and Analytics Are Not Enabled</h2>
+                <p>Advertising is currently disabled. The site does not load AdSense or send AdSense ad requests. Google Analytics is not configured, and we do not claim to collect anonymous analytics. Hosting and Firebase service requests described above are separate from advertising or Google Analytics.</p>
+                <p class="mt-3">Any future advertising launch requires an updated privacy policy, validation of the advertising account and setup, and a Google-certified consent management platform (CMP) in applicable jurisdictions. Consent, refusal, and withdrawal choices must be implemented and verified before ads are enabled. There are no placeholder consent controls on this site, and this policy is not a consent mechanism or a claim of legal compliance.</p>
+            </section>
+
+            <section id="your-choices">
+                <h2 class="text-2xl font-bold text-white mb-3">Your Choices and Deletion</h2>
                 <ul class="list-disc ml-6 mt-2 space-y-2">
-                    <li><strong>Google AdSense:</strong> To display advertisements. Google may use cookies to show ads based on your prior visits to this website or other websites. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" class="text-purple-400 hover:underline">Google's Ads Settings</a>.</li>
-                    <li><strong>Google Analytics:</strong> To understand how visitors use our site. Data is collected anonymously.</li>
-                    <li><strong>Google Firebase:</strong> To provide authentication and leaderboard functionality. If you sign in, we store your display name, user ID, and game scores in Cloud Firestore.</li>
+                    <li><strong>Play signed out:</strong> no account is needed for dice rolling or local stats. Sign out before playing if you do not want subsequent wins automatically submitted.</li>
+                    <li><strong>Delete local stats:</strong> clear this site's localStorage or site data in your browser settings. Clearing all site data may also clear the local authentication session. This does not remove Firebase Authentication, user profile, or score records.</li>
+                    <li><strong>Sign out:</strong> this ends the app's signed-in session; it does not delete local game statistics or remote records.</li>
+                    <li><strong>Request remote deletion:</strong> use the <a href="contact.html#data-deletion" class="text-purple-400 hover:underline">account and score deletion contact instructions</a> to request removal of the Firebase Authentication account, Firestore <code>users</code> document, <code>dailyScores</code>, and <code>allTimeScores</code>. Specify all records you want removed. This is a manual request, not an in-game delete-account feature; verification of account control may be needed.</li>
                 </ul>
+                <p class="mt-3">There is no fixed automatic retention or deletion schedule promised here. Local data remains until cleared or evicted by the browser; cloud records may remain until manually removed. Ask about any account-linked moderation records in a deletion request; their handling requires review of applicable retention duties rather than a promise of unconditional erasure. Provider logs and backups are governed by provider settings and policies; their retention has not been verified for this deployment. Removing records from this project cannot recall copies already made by others from the public leaderboard.</p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Data Storage</h2>
-                <p>All game data (scores, streaks, attempts) is stored locally in your browser. We do not collect or store this information on our servers. Leaderboard data is stored in Google Cloud Firestore and includes only your chosen display name, anonymous user ID, win streak, and attempt count.</p>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-bold text-white mb-3">Children's Privacy</h2>
-                <p>This game is suitable for all ages. We do not knowingly collect personal information from children under 13.</p>
+                <h2 class="text-2xl font-bold text-white mb-3">General Audience and Younger Visitors</h2>
+                <p>The game is intended for a general audience, not specifically directed to children. If you are below the applicable age for using these account services in your jurisdiction, do not use Google sign-in or submit leaderboard entries. A parent or guardian can contact the maintainer about a child's account or score data. This guidance is not an age-verification system and does not by itself establish compliance with children's privacy requirements.</p>
             </section>
 
             <section>
@@ -85,8 +118,9 @@
             </a>
         </div>
 
-        <!-- Footer Navigation -->
-        <div class="mt-12 text-center text-sm text-gray-500 space-y-2">
+        </main>
+        <footer class="mt-12 text-center text-sm text-gray-300 space-y-2">
+            <nav aria-label="Footer">
             <div class="space-x-4">
                 <a href="index.html" class="hover:text-purple-400">Play</a>
                 <span>·</span>
@@ -107,7 +141,8 @@
                 <span>·</span>
                 <a href="contact.html" class="hover:text-purple-400">Contact</a>
             </div>
-        </div>
+            </nav>
+        </footer>
     </div>
 </body>
 </html>
